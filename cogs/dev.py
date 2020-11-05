@@ -277,7 +277,7 @@ class Desenvolvimento(commands.Cog):
          return await ctx.send(f"{self.bot._emojis['incorreto']} | **{ctx.author.name}**, já tem um formulário em aberto no seu DM.", delete_after=30)
 
       try:
-         nome = discord.Embed(description=f"<:newDevs:573629564627058709> **|** Então você quer adicionar um **Comando** no NewDevs?\nPara isso precisamos que você preencha um pequeno formulário para cadastramento de seu **comando** em nosso sistema.\n\n{self.bot._emojis['nome']} **|** Diga-nos o nome do **comando**: \n{self.bot._emojis['timer']} **|** **2 minutos**", color=self.bot.cor)
+         nome = discord.Embed(description=f"<:newDevs:573629564627058709> **|** Então você quer adicionar um **Comando** no nosso servidor?\nPara isso precisamos que você preencha um pequeno formulário para cadastramento de seu **comando** em nosso sistema.\n\n{self.bot._emojis['nome']} **|** Diga-nos o nome do **comando**: \n{self.bot._emojis['timer']} **|** **2 minutos**", color=self.bot.cor)
          msg_nome = await ctx.author.send(embed=nome, delete_after=120)
       except:
          await ctx.send(f"{self.bot._emojis['incorreto']} | **{ctx.author.name}**, você precisa ativar as **`Mensagens Diretas`** para que eu possa prosseguir com o formulário de adicionar comandos.")
