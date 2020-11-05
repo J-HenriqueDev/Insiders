@@ -32,6 +32,8 @@ class main(discord.ext.commands.Bot):
         self.correto = "<:correto:761205727670829058>"
         
         
+        self.logschannels = 772998516707426334
+        self.logsroles = 772998619304951810
         self.logsusers = 773567922526355496
         self.logscargos = 772998619304951810
         self.sugestao = 772972553769713735
