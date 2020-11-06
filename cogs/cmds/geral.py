@@ -250,13 +250,15 @@ class Geral(commands.Cog):
         try:
             emoji = await ctx.guild.create_custom_emoji(name=emotename, image=image)
             return
+        except discord.errors.Forbidden:
+            await ctx.send("falta de perms")
         except discord.errors.HTTPException:
             await ctx.send("Não consegui criar esse emoji, tente novamente com outro. :no_entry:")
             return
         except:
             await ctx.send("Emoji / url inválido (verifique se foi excluído ou se você cometeu um erro de digitação): no_entry:")
             return
-        await ctx.send("{}| {} Emoji adicionado com sucesso.".format(emoji, ctx.author.mention))
+        await ctx.send(f"{emoji}| <@{ctx.author.id}> Emoji adicionado com sucesso.")
 
     @commands.command(description='Mostra a lista dos maiores invitantes do servidor.',usage='c.topinviters',aliases=["ilb", "inviteslb","topinvite"],hidden=True)
     @commands.bot_has_permissions(embed_links=True)
