@@ -33,11 +33,6 @@ class bemvindo(commands.Cog):
             texto = "<a:emoji:760195465727180852> | **Membros** : "+str(membros).replace("0", "0⃣").replace("1", "1⃣").replace("2", "2⃣").replace("3", "3⃣").replace("4", "4⃣").replace("5", "5⃣").replace("6", "6⃣").replace("7", "7⃣").replace("8", "8⃣").replace("9", "9⃣")
             txt = f"{member} entrou no servidor."
             await canal.edit(topic=texto, reason=txt)
-        
-        #########################################
-
-
-
 
         #########################################
 
@@ -49,50 +44,7 @@ class bemvindo(commands.Cog):
         embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
         await self.bot.get_channel(773567922526355496).send(embed=embed)
         
-        ###################################################################
-        print(f"{member} disparou ")
-        canal = discord.utils.get(member.guild.channels, id=772972570752319488)
-        #await member.add_roles(member.guild.get_role(772972516817895484))
-        try:
-            numeros = randint(1000,10000)
-            image = ImageCaptcha()
-            image.generate('12345')
-            image.write(str(numeros), 'out.png')
-            mention = await canal.send(member.mention)
-            embed = discord.Embed(description="",color=0x7289da)
-            embed.set_author(name="🔑| Captcha")
-            embed.add_field(name='Por favor escreva os números a baixo (sem espaço) ',value= f"**--Tempo maximo de 5 minutos--**")
-            embed.set_image(url="attachment://out.png")
-            embed_enviado = await canal.send(embed=embed, file=discord.File('out.png'))
 
-            check=lambda m: m.author == member            
-
-            tentativas = 0
-            tentativas_max = 2
-            while tentativas <= tentativas_max:
-                tentativas += 1
-                msg = await self.bot.wait_for('message', check=check, timeout=300)
-                if msg.content == str(numeros):
-                    msg_sucesso = await canal.send('**Catpcha concluido com sucesso.**\n**Agora você se tornou um membro.**',delete_after=60)
-                    await member.remove_roles(member.guild.get_role(772972516817895484))
-                    await member.add_roles(member.guild.get_role(772972512711409725)) 
-                    await asyncio.sleep(10)
-                    await mention.delete()
-                    await msg_sucesso.delete()
-                    await msg.delete()
-                    await embed_enviado.delete()
-                    break
-                else:
-                    if tentativas <= tentativas_max:
-                        await canal.send(f'Resposta errada, você tem mais ``{tentativas_max - tentativas}`` tentativa(s)',delete_after=60)
-                    else:
-                        await member.guild.kick(member, reason=f'{member} falhou durante o captcha.')
-
-        except Exception as e:
-            print(e)
-        
-        
-        
         print(f"{member} entrou ")
         url = requests.get(member.avatar_url_as(format="png"))
         avatar = Image.open(BytesIO(url.content))
@@ -116,8 +68,6 @@ class bemvindo(commands.Cog):
         escrever.text(xy=((fundo_x - texto_x)/2, 345), text=nome_user,fill=(0,0,0),font=fonte)
         fundo.paste(saida, (357, 39), saida)
         fundo.save("cogs/img/welcome.png")   
-   
-
 
         canal = self.bot.get_channel(772972552393981972)
         await canal.send(f"Olá {member.mention}, seja bem vindo ao servidor **{self.bot.get_user(self.bot.user.id).name}**, leia as <#772972551713587210> para ficar por dentro do servidor.", file=discord.File('cogs/img/welcome.png'))
