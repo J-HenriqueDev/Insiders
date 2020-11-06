@@ -16,7 +16,8 @@ class logs_messages(commands.Cog):
     #ok
     @commands.Cog.listener()
     async def on_message_delete(self,message):
-        if message.guild.id == self.bot.guild:
+        if message is None:
+            return
             if message.author.bot == False:
                 if message.channel.id == [772972558605090836,772972570752319488]:
                     return

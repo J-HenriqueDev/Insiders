@@ -25,7 +25,7 @@ class bemvindo(commands.Cog):
             dev = member.guild.get_role(772972514418753586)
             await member.add_roles(dev)
         else:
-            captchac = member.guild.get_role(772972516817895484)
+            captchac = member.guild.get_role(772972512711409725)
             await member.add_roles(captchac)
         if member.guild.id == self.bot.guild and not member.bot:
             canal = self.bot.get_channel(772972557015711744)
