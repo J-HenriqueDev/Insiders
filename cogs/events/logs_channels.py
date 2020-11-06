@@ -23,15 +23,15 @@ class logs_channels(commands.Cog):
                 if x.action == discord.AuditLogAction.channel_delete:
                     deletedby = x.user
             if isinstance(channel, discord.TextChannel):
-                s = discord.Embed(description="o canal de texto **{}** foi deletado por **{}**.".format(channel, deletedby), colour=0xf84b50,
+                s = discord.Embed(description="o canal de texto **{}** foi deletado por **{}**.".format(channel.name, deletedby), colour=0xf84b50,
                                 timestamp=datetime.now(pytz.timezone('America/Sao_Paulo')))
                 s.set_author(name=server, icon_url=server.icon_url)
             elif isinstance(channel, discord.VoiceChannel):
-                s = discord.Embed(description="O canal de voz **{}** foi deletado por  **{}**.".format(channel, deletedby),
+                s = discord.Embed(description="O canal de voz **{}** foi deletado por  **{}**.".format(channel.name, deletedby),
                                 colour=0xf84b50, timestamp=datetime.now(pytz.timezone('America/Sao_Paulo')))
                 s.set_author(name=server, icon_url=server.icon_url)
             else:
-                s = discord.Embed(description="A categoria **{}** foi deletada por **{}**.".format(channel, deletedby),
+                s = discord.Embed(description="A categoria **{}** foi deletada por **{}**.".format(channel.name, deletedby),
                                 colour=0xf84b50, timestamp=datetime.now(pytz.timezone('America/Sao_Paulo')))
                 s.set_author(name=server, icon_url=server.icon_url)
             canal = self.bot.get_channel(self.bot.logschannels)

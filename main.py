@@ -50,6 +50,7 @@ class main(discord.ext.commands.Bot):
        
         self.carregados = 1
         self.falhas = 0
+        '''
         for file in [c for c in os.listdir("cogs") if c.endswith(".py")]:
                 name = file[:-3]
                 try:
@@ -59,6 +60,7 @@ class main(discord.ext.commands.Bot):
                 except Exception as e:
                     print(f"FALHA AO CARREGAR  [{file}] MODULO ERROR [{e}]")
                     self.falhas += 1
+        '''
         print("( * ) | Tentando se conectar ao banco de dados...")
         try:
             mongo = MongoClient(self.database)
@@ -90,9 +92,7 @@ class main(discord.ext.commands.Bot):
         except Exception as e:
             self.dispatch('command_error', ctx, e)
 
-        if message.channel.id == self.sugestao:
-            await message.add_reaction('<:like:760197986609004584>')
-            return await message.add_reaction('<:unlike:760197986592096256>')
+        
 
 
     async def on_ready(self):
@@ -104,17 +104,37 @@ class main(discord.ext.commands.Bot):
         print(f'Guilds: {len(self.guilds)}')
         print('---------------------------------')
 
+        '''
         log_ready = self.get_channel(679729322298441765)
         texto = f"<a:sabre:761230638044676106> **{self.user.name}** online | `{self.carregados}` Modulos Funcionando corretamente e `{self.falhas}` falhas detectadas."
         embed = discord.Embed(color=self.cor,description=texto)
         embed.set_author(name="BOT ONLINE",icon_url="https://media.discordapp.net/attachments/610244217763004430/760176340594065408/106913079_300540654602631_1385874962180230666_n.jpg")
         await log_ready.send(embed=embed)
-       
+       '''
         
         
 bot = main()
 
 if __name__ == '__main__':
+    for filename in [c for c in os.listdir("cogs/cmds") if c.endswith(".py")]: 
+            name = filename[:-3]
+            try:    
+                bot.load_extension(f'cogs.cmds.{name}') 
+                #print(f'MÓDULO [{filename}] CARREGADO')
+            except commands.NoEntryPointError:
+                print(f'⚠ - Módulo {filename[:-3]} ignorado! "def setup" não encontrado!!')
+            except Exception as e:
+                print(f'⚠ - Módulo {filename[:-3]} deu erro na hora de carregar!\nerro: {e}')
+
+    for filename in [c for c in os.listdir("cogs/events") if c.endswith(".py")]:  
+            name = filename[:-3]  
+            try:                # 
+                bot.load_extension(f'cogs.events.{filename[:-3]}') 
+                #print(f'EVENTO [{filename}] CARREGADO')
+            except commands.NoEntryPointError:
+                pass  # se não achar o def setup
+            except:
+                print(f'⚠ - Módulo {filename[:-3]} não foi carregado!')
     try:
         bot.run(secrets.TOKEN)
     except KeyboardInterrupt: 

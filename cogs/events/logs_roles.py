@@ -12,7 +12,7 @@ class logs_roles(commands.Cog):
         self.bot = bot
         self.session = aiohttp.ClientSession()    
     
-    
+    #ok
     @commands.Cog.listener()
     async def on_guild_role_create(self,role):
         if role.guild.id == self.bot.guild:
