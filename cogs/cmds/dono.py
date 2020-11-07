@@ -270,7 +270,7 @@ class Owner(commands.Cog):
         if not ctx.author.id in self.bot.dono:
           await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
           return 
-        cargo = ctx.guild.get_role(759814435031875586)
+        cargo = ctx.guild.get_role(772972512711409725)
         try:
             for member in ctx.guild.members:
                 if member.bot:

@@ -4,10 +4,11 @@ from discord.ext import commands
 import random
 import time , pytz
 import asyncio
+from random import randint
 from pymongo import MongoClient, ASCENDING, DESCENDING
 from pymongo import MongoClient
 from asyncio import TimeoutError as Esgotado
-from datetime import datetime
+from datetime import datetime, timedelta
 import pymongo
 import json
 
@@ -48,92 +49,7 @@ class Desenvolvimento(commands.Cog):
                 "logo": "https://imgur.com/T0RjAz1.png"
             }
         }
-    
-   '''
-   @commands.bot_has_permissions(embed_links=True)
-   @commands.cooldown(1,10,commands.BucketType.user)
-   @commands.guild_only()
-   @commands.command(description='Dê um ponto de reputação para quando um New Helper> lhe ajudar.',usage='c.rep @New Helper>')
-   async def rep(self, ctx, *, user: discord.Member = None):
-         if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
-          await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
-          return
-         if user is None:
-            embed=discord.Embed(description=f"{self.bot._emojis['incorreto']} **|** Olá **{ctx.author.name}**, mencione o usuário que você gostaria de dá a reputação.", color=self.bot.cor)
-            msg = await ctx.send(embed=embed)
-            await asyncio.sleep(20)
-            await msg.delete()              
-            return
-         else:
-            usuario = user
-            if usuario.bot is True:
-               embed=discord.Embed(description=f"{self.bot._emojis['incorreto']} **|** Olá **{ctx.author.name}**, não é possível dá reputação ao um **BOT**.", color=self.bot.cor)
-               msg = await ctx.send(embed=embed)
-               await asyncio.sleep(20)
-               await msg.delete()              
-               return
-            if not str("Helper") in [r.name for r in user.roles if r.name != "@everyone"]:
-                embed=discord.Embed(description=f"{self.bot._emojis['incorreto']} **|** Olá **{ctx.author.name}**, o usuário {user.mention} não é um **Helper>** registrado.", color=self.bot.cor)
-                msg = await ctx.send(embed=embed)
-                await asyncio.sleep(20)
-                await msg.delete()              
-                return
-            if ctx.author.id == user.id:
-               embed=discord.Embed(description=f"{{self.bot._emojis['incorreto']}} **|** Olá **{ctx.author.name}**, não é possível dá reputação a si mesmo.", color=self.bot.cor)
-               msg = await ctx.send(embed=embed)
-               await asyncio.sleep(20)
-               await msg.delete()              
-               return
-             
-            if ctx.author.id in timetime:
-               w = json.loads(timetime[ctx.author.id])
-               if time.time() < w:
-                  w = int(w) - int(time.time())
-                  minute = 60
-                  hour = minute * 60
-                  day = hour * 24
-                  days =  int(w / day)
-                  hours = int((w % day) / hour)
-                  minutes = int((w % hour) / minute)
-                  seconds = int(w % minute)
-                  string = ""
-                  if days > 0:
-                     string += str(days) + " " + (days == 1 and "dia" or "dias" ) + ", "
-                  if len(string) > 0 or hours > 0:
-                     string += str(hours) + " " + (hours == 1 and "hora" or "horas" ) + ", "
-                  if len(string) > 0 or minutes > 0:
-                     string += str(minutes) + " " + (minutes == 1 and "minuto" or "minutos" ) + ", "
-                  string += str(seconds) + " " + (seconds == 1 and "segundo" or "segundos" )
-                  embed=discord.Embed(description=f"{self.bot._emojis['timer']} **|** Olá **{ctx.author.name}**, você precisa esperar **{str(string)}** para da uma nova reputação ao usuário.", color=self.bot.cor)
-                  await ctx.send(embed=embed)
-                  return
-            mongo = MongoClient(self.bot.database)
-            bard = mongo['bard']
-            users = bard['users']
-            usuario = bard.users.find_one({'_id': str(usuario.id)})
-            if usuario is None:
-               embed=discord.Embed(description=f"{self.bot._emojis['correto']} **|** Olá **{ctx.author.name}**, você deu **1** ponto de reputação ao usuário {user.mention}.", color=self.bot.cor)
-               await ctx.send(embed=embed)
-               rep = int(usuario["reps"])+int(1)
-               bard.users.update_one({'_id': str(user.id)}, {'$set': {'reps':int(rep)}})
-            else:
-               embed=discord.Embed(description=f"{self.bot._emojis['correto']} **|** Olá **{ctx.author.name}**, você deu **1** de reputação ao usuário {user.mention}.", color=self.bot.cor)
-               await ctx.send(embed=embed)
-               rep = int(usuario["reputação"])+int(1)
-               bard.users.update_one({'_id': str(user.id)}, {'$set': {'reps':int(rep)}})
-
-   @rep.error
-   async def rep_error(self, ctx, error):
-      if isinstance(error, commands.BadArgument):
-         comma = error.args[0].split('"')[1]
-         embed = discord.Embed(title=f"{self.bot._emojis['incorreto']} | MEMBRO INVÁLIDO!", color=self.bot.cor, description=f"O membro `{comma}` não foi encontrado.")
-         await ctx.send(embed=embed)
-         ctx.command.reset_cooldown(ctx)
-         return
-       
-
-   '''
-
+   
 
    @commands.command()
    async def reps(self, ctx, membro: discord.Member = None):
@@ -375,11 +291,8 @@ class Desenvolvimento(commands.Cog):
          elif len(resposta.content) > limite:
                tentativas += 1
                embed=discord.Embed(description=f"{self.bot._emojis['incorreto']} **|** Olá **{ctx.author.name}**, o **código** do comando que você inseriu passou do limite de 2000 caracteres.\n\n{self.bot._emojis['seta']} | **Tentativa: `{tentativas}/3`**", color=self.bot.cor)
-               await ctx.author.send(embed)
-               #await ctx.author.send(f"{self.bot._emojis['seta']} Seu código ultrapassa o limite de **`{limite}`** caracteres permitidos.\n**Tentativa: `{tentativas}/3`**", delete_after=15)
+               await ctx.author.send(embed) 
          else:
-               #embed=discord.Embed(description=f"{self.bot._emojis['incorreto']} **|** Seu comando foi enviado para análise e informaremos o fututo dele no canal <#773555758632796251>.", color=self.bot.cor)
-               #await ctx.author.send(embed)
                code = resposta.content
       
       if not code:
@@ -485,6 +398,87 @@ class Desenvolvimento(commands.Cog):
          self.bot.db.cmds.delete_one(comando)
          await mensagem.delete()
 
+   @commands.command(
+      name='rep',
+      description='Dá um ponto de reputação para um Helper',
+      usage='c.rep <Helper>'
+   )
+   @commands.cooldown(1, 6, commands.BucketType.user)
+   async def _rep(self, ctx, *, member: discord.Member):
+      if member.bot:
+         return await ctx.send(f"{self.bot._emojis['errado']} | **{ctx.author.name}**, você mencionou um bot <a:dance12:654751240865054720>", delete_after=20)
+
+      if member == ctx.author:
+         return await ctx.send(f"{self.bot._emojis['errado']} | **{ctx.author.name}**, você não pode dar um ponto de reputação a si mesmo <a:dance12:654751240865054720>")
+
+      if not str("Helper") in [r.name for r in member.roles if r.name != "@everyone"]:
+               embed=discord.Embed(description=f"{self.bot._emojis['incorreto']} **|** Olá **{ctx.author.name}**, o usuário {member.mention} não é um **</Helper>** registrado.", color=self.bot.cor)
+               return await ctx.send(embed=embed, delete_after=30)      
+
+      db = self.bot.db.users
+      user = db.find_one({"_id": member.id})
+      author = db.find_one({"_id": ctx.author.id})
+      proximo_rep = author['próximo_rep']
+      agora = datetime.now()
+      if proximo_rep is None or agora >= proximo_rep:
+         user['reps'] += 1
+         user['reps_totais'] += 1
+         author['próximo_rep'] = agora + timedelta(hours=2, minutes=randint(30, 59))
+         author['histórico_reps'].insert(
+               0, {
+                  "user": member.id,
+                  "data": datetime.now()
+               }
+         )
+         db.save(user)
+         db.save(author)
+         embed=discord.Embed(description=f"{self.bot._emojis['correto']} **|** Olá **{ctx.author.name}**, você deu **1** ponto de reputação ao usuário {member.mention}.", color=self.bot.cor)
+         await ctx.send(embed=embed)
+
+         em = discord.Embed(
+               title=f"Deu reputação para {member}",
+               timestamp=datetime.utcnow(pytz.timezone('America/Sao_Paulo')),
+               colour=self.bot.cor,
+               description=f"**ID** do **Usuário**: `{ctx.author.id}`\n**ID** do **Helper**: `{member.id}`"
+         ).set_author(
+               name=f"{ctx.author}",
+               icon_url=ctx.author.avatar_url
+         ).set_thumbnail(
+               url=member.avatar_url
+         ).set_footer(
+               text=ctx.guild.name,
+               icon_url=ctx.guild.icon_url
+         )
+
+         logs = self.bot.get_channel(772972566402826242)
+         await logs.send(embed=em)
+      else:
+         segundos = (proximo_rep - agora).total_seconds()
+         
+         m, s = divmod(segundos, 60)
+         h, m = divmod(m, 60)
+
+         if h == 0.0:
+               cd = f"**`{int(m)}`** minuto(s)"
+         else:
+               cd = f"**`{int(h)}` hora(s) e `{int(m)}` minuto(s)**"
+         
+         embed=discord.Embed(description=f"{self.bot._emojis['timer']} **|** Olá **{ctx.author.name}**, você precisa esperar {str(cd)} para da uma nova reputação ao usuário.", color=self.bot.cor)
+         await ctx.send(embed=embed)
+
+   @_rep.error
+   async def _rep_error(self, ctx, error):
+      if isinstance(error, commands.BadArgument):
+         comma = error.args[0].split('"')[1]
+         embed = discord.Embed(title=f"{self.bot._emojis['incorreto']} | MEMBRO INVÁLIDO!", color=self.bot.cor, description=f"O membro `{comma}` não foi encontrado.")
+         await ctx.send(embed=embed)
+         ctx.command.reset_cooldown(ctx)
+         return
+       
+
+
+
+
 
    @commands.cooldown(1,10,commands.BucketType.user)
    @commands.guild_only()
@@ -502,7 +496,7 @@ class Desenvolvimento(commands.Cog):
 
    @commands.cooldown(1,10,commands.BucketType.user)
    @commands.guild_only()
-   @commands.command(description="Mostra o dos melhores NewHelper's do servidor",usage='c.tophelper',aliases=['top'])
+   @commands.command(description="Mostra o dos melhores NewHelper's do servidor",usage='c.tophelper',aliases=['top','reprank'])
    async def tophelper(self, ctx):
       if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
          await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
@@ -511,6 +505,9 @@ class Desenvolvimento(commands.Cog):
       bard = mongo['insiders']
       users = bard['users']
       top = users.find({"helper": True}).sort('reps', pymongo.DESCENDING).limit(10)
+      #print(top)
+      if top is None:
+         return await ctx.send(f"{self.bot._emojis['errado']} | **{ctx.author.name}** no momento não temos nenhum ```helper`` registrado em nosso servidor.")
       rank = []
       for valor in top:
          count = len(rank)
@@ -711,22 +708,11 @@ class Desenvolvimento(commands.Cog):
                                  server = self.bot.get_guild(self.bot.guild)
                                  channel = discord.utils.get(server.channels, id=self.bot.helper)
                                  await channel.send(embed=embed)
-                                 mongo = MongoClient(self.bot.database)
-                                 bard = mongo['bard']
-                                 users = bard['users']
-                                 users = bard.users.find_one({"_id": str(ctx.author.id)})
+                                 db = self.bot.db.users
+                                 users = db.find_one({"_id": ctx.author.id})
                                  if users is None:
-                                   
-                                    #serv ={"_id": str(ctx.author.id),"nome": str(nome.content),"id": str(ctx.author.id),"foi_mute":"Não","vezes_mute":"0","linguagem": str(lang1.content) ,"reputação":int(0),"linguagem2": str(lang2.content),"aceito_por":str(author.id)}
-                                    #bard.users.insert_one(serv).inserted_id
-                                    users['helper'] = True,
-                                    users['nome_real'] = str(nome.content),
-                                    users['linguagem'] = str(lang1),
-                                    users['linguagem2'] = str(lang2)
-                                    users['aceito_por'] = str(author.id)
-                                    bard.users.save(users)
-                                    print("[Helper] : inserido")
-                                    
+                                    return self.bot.adicionar_user(self.users, ctx.author)
+                                    db.update_one({"_id": ctx.author.id}, {"$set": {"nome_real":str(nome.content),"linguagem": str(lang1.content) ,"linguagem2": str(lang2.content),"aceito_por":str(author.id), "helper": True}})
                                     
                                     server = self.bot.get_guild(self.bot.guild)
                                     cargo = discord.utils.get(server.roles, name="Helper")
@@ -744,9 +730,10 @@ class Desenvolvimento(commands.Cog):
                                        cargo = discord.utils.get(server.roles, name="Helper JavaScript")
                                        await ctx.author.add_roles(cargo)
                                  else:
-                                    print("[Helper] : updatado")
-                                    #bard.users.update_many({"_id": str(ctx.author.id)}, {'$set': {"nome": str(nome.content),"id": str(ctx.author.id),"foi_mute":"Não","vezes_mute":"0","foi_devhelper":"Não","vezes_reportado":"0","reputação":int(0),"level":"0","exp":"0","aceito_por":str(author.id)}})
-                                    bard.users.update_many({"_id": str(ctx.author.id)}, {'$set': {"nome": str(nome.content),"id": str(ctx.author.id),"foi_mute":"Não","vezes_mute":"0","linguagem": str(lang1.content) ,"reputação":int(0),"linguagem2": str(lang2.content),"aceito_por":str(author.id)}})
+                                    db.update_one({"_id": ctx.author.id}, {"$set": {"nome_real":str(nome.content),"linguagem": str(lang1.content) ,"linguagem2": str(lang2.content),"aceito_por":str(author.id), "helper": True}})
+                                    #db.save(users)
+                                    print("[Helper] : atualizado")
+
                                     server = self.bot.get_guild(self.bot.guild)
                                     cargo = discord.utils.get(server.roles, name="Helper")
                                     await ctx.author.add_roles(cargo)

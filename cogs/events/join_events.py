@@ -1,4 +1,5 @@
 import asyncio
+import aiohttp
 import discord
 from discord.ext import commands
 from datetime import datetime, timedelta
@@ -17,7 +18,7 @@ class bemvindo(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
 
-
+    
 
     @commands.Cog.listener()  
     async def on_member_join(self, member):
@@ -35,42 +36,45 @@ class bemvindo(commands.Cog):
             await canal.edit(topic=texto, reason=txt)
 
         #########################################
-
-
-        cat = member.created_at.replace(tzinfo=pytz.utc).astimezone(tz=pytz.timezone('America/Sao_Paulo')).strftime('`%d/%m/%Y`')
-        dias = (datetime.utcnow() - member.created_at).days
-        embed = discord.Embed(color=self.bot.cor, description=f'**{member.mention}(`{member.id}`) entrou no servidor, com a conta criada em {cat}({dias} dias).**')
-        embed.set_thumbnail(url=member.avatar_url)
-        embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
-        await self.bot.get_channel(773567922526355496).send(embed=embed)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(str(member.avatar_url_as(format="webp"))) as resp:
+                if resp.status == 200:
+                    response = BytesIO(await resp.read())
+                else:
+                    return
         
+            print(f"{member} entrou ")
+            avatar = Image.open(response)
+            avatar = avatar.resize((210, 210));
+            bigsize = (avatar.size[0] * 2,  avatar.size[1] * 2)
+            mask = Image.new('L', bigsize, 0)
+            draw = ImageDraw.Draw(mask)
+            draw.ellipse((0, 0) + bigsize, fill=255)
+            mask = mask.resize(avatar.size, Image.ANTIALIAS)
+            avatar.putalpha(mask)
 
-        print(f"{member} entrou ")
-        url = requests.get(member.avatar_url_as(format="png"))
-        avatar = Image.open(BytesIO(url.content))
-        avatar = avatar.resize((210, 210));
-        bigsize = (avatar.size[0] * 2,  avatar.size[1] * 2)
-        mask = Image.new('L', bigsize, 0)
-        draw = ImageDraw.Draw(mask)
-        draw.ellipse((0, 0) + bigsize, fill=255)
-        mask = mask.resize(avatar.size, Image.ANTIALIAS)
-        avatar.putalpha(mask)
+            saida = ImageOps.fit(avatar, mask.size, centering=(0.5, 0.5))
+            saida.putalpha(mask)
 
-        saida = ImageOps.fit(avatar, mask.size, centering=(0.5, 0.5))
-        saida.putalpha(mask)
+            fundo = Image.open('cogs/img/bem-vindo.png')
+            fonte = ImageFont.truetype('cogs/img/college.ttf',42)
+            escrever = ImageDraw.Draw(fundo)
+            nome_user = str(member) if len(str(member)) <= 50 else str(member)[:50]
+            fundo_x, _ = fundo.size
+            texto_x, _ = escrever.textsize(nome_user, font=fonte)
+            escrever.text(xy=((fundo_x - texto_x)/2, 345), text=nome_user,fill=(0,0,0),font=fonte)
+            fundo.paste(saida, (357, 39), saida)
+            arr = BytesIO()
+            fundo.save(arr, format='PNG')
+            arr.seek(0)
+            file = discord.File(arr, filename='welcome.png')
 
-        fundo = Image.open('cogs/img/bem-vindo.png')
-        fonte = ImageFont.truetype('cogs/img/college.ttf',42)
-        escrever = ImageDraw.Draw(fundo)
-        nome_user = str(member) if len(str(member)) <= 50 else str(member)[:50]
-        fundo_x, _ = fundo.size
-        texto_x, _ = escrever.textsize(nome_user, font=fonte)
-        escrever.text(xy=((fundo_x - texto_x)/2, 345), text=nome_user,fill=(0,0,0),font=fonte)
-        fundo.paste(saida, (357, 39), saida)
-        fundo.save("cogs/img/welcome.png")   
-
-        canal = self.bot.get_channel(772972552393981972)
-        await canal.send(f"Olá {member.mention}, seja bem vindo ao servidor **{self.bot.get_user(self.bot.user.id).name}**, leia as <#772972551713587210> para ficar por dentro do servidor.", file=discord.File('cogs/img/welcome.png'))
+            canal = self.bot.get_channel(772972552393981972)
+            texto = f"Seja bem vindo ao servidor **{self.bot.get_user(self.bot.user.id).name}**, leia as <#772972551713587210> para ficar por dentro do servidor."
+            embed = discord.Embed(author="BEM VINDO",description=texto,color=self.bot.cor)
+            embed.set_image(url='attachment://welcome.png')
+            await canal.send(embed=embed, file=file,content=f"{member.mention}")
+            #await canal.send(f"Olá {member.mention}, seja bem vindo ao servidor **{self.bot.get_user(self.bot.user.id).name}**, leia as <#772972551713587210> para ficar por dentro do servidor.", file=discord.File('cogs/img/welcome.png'))
  
 
 

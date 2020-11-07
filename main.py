@@ -2,19 +2,20 @@ import discord
 import os
 import json
 from config import secrets
+from database import adicionar_user
 from discord.ext import commands
 from utils.role import emojis
 from utils.role import cargos
 from pymongo import MongoClient
 
-intents = discord.Intents.all()
+intents = discord.Intents.default()
 intents.members = True
+intents.presences = True
 
 
 class main(discord.ext.commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=commands.when_mentioned_or(secrets.PREFIXO),
-
                         case_insensitive=True,
                         pm_help=None,
                         shard_count=1,
@@ -32,6 +33,7 @@ class main(discord.ext.commands.Bot):
         self.correto = "<:correto:761205727670829058>"
         
         
+        self.adicionar_user = adicionar_user
         self.logschannels = 772998516707426334
         self.logsroles = 772998619304951810
         self.logsusers = 773567922526355496
@@ -48,19 +50,6 @@ class main(discord.ext.commands.Bot):
         self.token = 'blz,talvez outro dia.'
         self.cor = 0xf10cdb
        
-        self.carregados = 1
-        self.falhas = 0
-        '''
-        for file in [c for c in os.listdir("cogs") if c.endswith(".py")]:
-                name = file[:-3]
-                try:
-                    self.load_extension(f"cogs.{name}")
-                    self.carregados += 1
-                    print(f'MÓDULO [{file}] CARREGADO')
-                except Exception as e:
-                    print(f"FALHA AO CARREGAR  [{file}] MODULO ERROR [{e}]")
-                    self.falhas += 1
-        '''
         print("( * ) | Tentando se conectar ao banco de dados...")
         try:
             mongo = MongoClient(self.database)
@@ -69,6 +58,10 @@ class main(discord.ext.commands.Bot):
             exit()
 
         self.db = mongo['insiders']
+
+
+
+        
         print(f"( > ) | Conectado ao banco de dados!")
         
     
@@ -103,14 +96,6 @@ class main(discord.ext.commands.Bot):
         print(f'Bots: {len([c for c in self.users if c.bot])}')
         print(f'Guilds: {len(self.guilds)}')
         print('---------------------------------')
-
-        '''
-        log_ready = self.get_channel(679729322298441765)
-        texto = f"<a:sabre:761230638044676106> **{self.user.name}** online | `{self.carregados}` Modulos Funcionando corretamente e `{self.falhas}` falhas detectadas."
-        embed = discord.Embed(color=self.cor,description=texto)
-        embed.set_author(name="BOT ONLINE",icon_url="https://media.discordapp.net/attachments/610244217763004430/760176340594065408/106913079_300540654602631_1385874962180230666_n.jpg")
-        await log_ready.send(embed=embed)
-       '''
         
         
 bot = main()

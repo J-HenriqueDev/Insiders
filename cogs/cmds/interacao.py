@@ -245,21 +245,14 @@ class Interação(commands.Cog):
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.guild_only()
     @commands.command(name='abraça', aliases=['hug', 'abraço'])
-    async def abraça(self, ctx, member: discord.Member, membro=None):
+    async def abraça(self, ctx, member: discord.Member):
         if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
           await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
           return
-        if membro == None:
-            membro = ctx.author
-        else:
-            if ctx.author == member == membro:
-                await ctx.invoke(self.bot.get_command('endeline'))
-                await msg.delete()
-
-        """<membro>: Use isso com amor <3."""
+        
         gif = random.choice(hug)
 
-        abraça2 = '{} **deu um abraço em** {}'.format(membro.mention, member.mention)
+        abraça2 = '{} **deu um abraço em** {}'.format(ctx.author.mention, member.mention)
 
         embed = discord.Embed(title="**Abraço!**", colour=discord.Colour(0x370c5e),
                                 description="{}".format(abraça2))
@@ -280,7 +273,9 @@ class Interação(commands.Cog):
             return
         else:
             await msg.delete()
-            await ctx.invoke(self.bot.get_command('abraça'), ctx.author, member)
+            author = ctx.author
+            ctx.author = member
+            await ctx.invoke(ctx.command, member=author)
 
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.guild_only()

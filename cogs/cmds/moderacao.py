@@ -1,6 +1,6 @@
 import discord
 from datetime import datetime, timedelta
-import pytz
+import pytz, typing
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from discord.ext import commands
@@ -110,91 +110,127 @@ class moderacao(commands.Cog):
             for kwargs in color_roles:
                 await ctx.guild.create_role(**kwargs, reason="hehe")
 
-    @commands.command()
-    @commands.bot_has_permissions(ban_members = True)
-    @commands.has_permissions(ban_members = True)
-    async def ban(self, ctx, members: commands.Greedy[discord.Member] = None, *, reason: str = 'Motivo não informado.'): # Ban command
-        # Discord return
-        if members is None:
-            e = discord.Embed(description = f'Você não informou o usuário a ser banido, {ctx.author.mention}!', colour = self.bot.cor, timestamp = datetime.utcnow())
-            e.set_footer(icon_url = ctx.author.avatar_url, text = ctx.author.name)
-            await ctx.send(embed = e)
-            await ctx.message.add_reaction('❌')
-        else:
-            for member in members:
-                await member.ban(reason = reason)
-                
-                e = discord.Embed(colour = self.bot.cor, timestamp = datetime.utcnow())
-                e.add_field(name = ':bust_in_silhouette: Usuário', value = f'{member.mention}')
-                e.add_field(name = ':crown: Moderador', value = f'{ctx.author.mention}')
-                e.add_field(name = ':grey_question: Motivo', value = f'{reason}')
-                e.set_author(name = 'BANIDO', icon_url = member.avatar_url)
-                e.set_footer(icon_url = ctx.author.avatar_url, text = ctx.author.name)
-                await ctx.send(embed = e)
-                await ctx.message.delete()
-                
-        
-       
-    @commands.command()
-    @commands.bot_has_permissions(ban_members = True)
-    @commands.has_permissions(ban_members = True)
-    async def unban(self, ctx, *, member = None): # Unban command
-        # Discord return
-        if member is None:
-            e = discord.Embed(description = f'Você não informou o usuário a ser desbanido, {ctx.author.mention}!', colour = self.bot.cor, timestamp = datetime.utcnow())
-            e.set_footer(icon_url = ctx.author.avatar_url, text = ctx.author.name)
-            await ctx.send(embed = e)
-            await ctx.message.add_reaction('❌')
+    @commands.command(usage='{}ban [membro] (motivo)', description='Bane um membro que está no servidor (ou não). [Banir Membros]', aliases=['banir'])
+    @commands.has_permissions(ban_members=True)
+    @commands.bot_has_permissions(ban_members=True)
+    async def ban(self, ctx, membro:typing.Union[discord.Member, str], *, reason="Não informado."):
+        if type(membro) == discord.Member:
+            erro = self.bot.erEmbed(ctx, 'Sem permissão.')
+
+            if membro == ctx.author:
+                erro.description = 'Você não pode se banir, bobinho!'
+
+            if membro == ctx.me:
+                erro.description = 'Não posso me banir...'
+
+            if membro.top_role.position >= ctx.author.top_role.position or membro == ctx.guild.owner:
+                erro.description = f'Você não tem permissão para banir **{membro.name}** (seu cargo é menor ou igual que o dele)'
+
+            if membro.top_role.position >= ctx.me.top_role.position:
+                erro.description = f'Eu não tenho permissão para banir **{membro.name}** (cargo dele é maior ou igual que o meu)'
+
+            if type(erro.description) != discord.Embed.Empty: # isinstance não funcionaria
+                return await ctx.send(embed=erro)
+            await membro.ban(reason=f'Por {ctx.author} || Motivo: {reason}')
+
+            # Não vou usar o self.bot.embed, já que esse embed sobescreve tudo.
+            embed = self.bot.embed(ctx)
+            embed.title = f'{self.bot.emotes["sora_ban"]} | Ban'
+            embed.description = 'Desrespeitou as regras, deu nisso aí.'
+            embed.add_field(name=f'Usuário:', value=f'Tag: `{membro}`\nId: `{membro.id}`', inline=False)
+            embed.add_field(name=f'Staffer:', value=f'Tag: `{ctx.author}`\nCargo: `{ctx.author.top_role.name}`', inline=False)
+            embed.add_field(name=f'Motivo:', value=reason, inline=False)
+            embed.set_footer(text=f'Banido: {membro.name}', icon_url=membro.avatar_url)
+            return await ctx.send(embed=embed)
+
         else:
             try:
-                banned_users = await ctx.guild.bans()
-                member_name, member_discriminator = member.split('#')
+                int(membro)
+            except ValueError:
+                embed = self.bot.erEmbed(ctx, 'Inválido')
+                embed.description = 'O "id" que você digitou não é um número!'
+                return await ctx.send(embed=embed)
 
+            member = discord.Object(id=membro)
 
-                for ban_entry in banned_users:
-                    user = ban_entry.user
+            embed = self.bot.embed(ctx, invisible=True)
+            embed.description = 'Banindo...'
+            m = await ctx.send(embed=embed)
 
-                    if (user.name, user.discriminator) == (member_name, member_discriminator):
-                        await ctx.guild.unban(user)
-                        
-                        e = discord.Embed(title = 'DESBANIDO', colour = 0x3AFE00, timestamp = datetime.utcnow())
-                        e.add_field(name = ':bust_in_silhouette: Usuário', value = f'{member}')
-                        e.add_field(name = ':crown: Moderador', value = f'{ctx.author.mention}')
-                        e.set_footer(icon_url = ctx.author.avatar_url, text = ctx.author.name)
-                        await ctx.send(embed = e)
-                        await ctx.message.delete()
-            
-            except Exception:
-                await ctx.message.add_reaction('❌')
-                e = discord.Embed(description = f'Não foi possível desbanir "{member}", {ctx.author.mention}!', colour = self.bot.cor, timestamp = datetime.utcnow())
-                e.set_footer(icon_url = ctx.author.avatar_url, text = ctx.author.name)
-                await ctx.send(embed = e)
+            try:
+                await ctx.guild.ban(member, reason=f'Por {ctx.author} || Motivo: {reason}')
+            except discord.NotFound:
+                embed = self.bot.erEmbed(ctx, 'Id inválido')
+                embed.description = f'O id que você digitou ({member.id}) não pertence à algum membro.\nVerifique erros de escrita.'
+                return await m.edit(embed=embed)
 
-    @commands.command()
-    @commands.bot_has_permissions(kick_members = True)
-    @commands.has_permissions(kick_members = True)
-    async def kick(self, ctx, members: commands.Greedy[discord.Member] = None, *, reason: str = 'Motivo não informado.'): # Kick command
-        # Discord return
-        if members is None:
-            e = discord.Embed(description = f'Você não informou o usuário a ser kickado, {ctx.author.mention}!', colour = self.bot.cor, timestamp = datetime.utcnow())
-            e.set_footer(icon_url = ctx.author.avatar_url, text = ctx.author.name)
-            await ctx.send(embed = e)
-            await ctx.message.add_reaction('❌')
-        else:
-            for member in members:
-                await member.kick(reason = reason)
+            embed.description = 'Membro banido, carregando embed...'
+            await m.edit(embed=embed)
 
-                e = discord.Embed(colour = self.bot.cor, timestamp = datetime.utcnow())
-                e.add_field(name = ':bust_in_silhouette: Usuário', value = f'{member.mention}')
-                e.add_field(name = ':crown: Moderador', value = f'{ctx.author.mention}')
-                e.add_field(name = ':grey_question: Motivo', value = f'{reason}')
-                e.set_author(name = 'KICKADO', icon_url = member.avatar_url)
-                e.set_footer(icon_url = ctx.author.avatar_url, text = ctx.author.name)
-                await ctx.send(embed = e)
-                await ctx.message.delete()
-                
-                memberName = member
+            member = await self.bot.fetch_user(member.id)
+            embed = self.bot.embed(ctx)
+            embed.title = f'{self.bot.emotes["sora_ban"]} | Ban'
+            embed.description = 'Desrespeitou as regras deu nisso ai.'
+            embed.add_field(name=f'Usuário:', value=f'Tag: `{member}`\nId: `{member.id}`', inline=False)
+            embed.add_field(name=f'Staffer:', value=f'Menção: {ctx.author.mention}\nCargo: `{ctx.author.top_role.name}`', inline=False)
+            embed.add_field(name=f'Motivo:', value=reason)
+            embed.set_footer(text=f'Banido: {member.name}', icon_url=member.avatar_url)
 
+            await m.edit(embed=embed)
+
+    @commands.command(usage='{}softban [membro] (motivo)', description='Bane e desbane um membro, util para limpar as mensagens rapidamente.')
+    @commands.has_permissions(ban_members=True)
+    @commands.has_permissions(ban_members=True)
+    async def softban(self, ctx, membro:discord.Member, *, reason="Não informado."):
+        erro = self.bot.erEmbed(ctx, 'Sem permissão.')
+
+        if membro == ctx.author:
+            erro.description = 'Você não pode se banir, bobinho!'
+
+        if membro == ctx.me:
+            erro.description = 'Não posso me banir...'
+
+        if membro.top_role.position >= ctx.author.top_role.position:
+            erro.description = f'Você não tem permissão para banir **{membro.name}** (seu cargo é menor ou igual que o dele)'
+
+        if membro.top_role.position >= ctx.me.top_role.position:
+            erro.description=f'Eu não tenho permissão para banir **{membro.name}** (cargo dele é maior ou igual que o meu)'
+
+        if type(erro.description) != discord.Embed.Empty: # isinstance não funciona aqui
+            return await ctx.send(embed=erro)
+
+        await membro.ban(reason=f'Por {ctx.author} || Motivo: {reason}')
+        await membro.unban(reason=f'Por {ctx.author} || Motivo: {reason}')
+        
+        embed = self.bot.embed(ctx)
+        embed.title = f'{self.bot.emotes["sora_ban"]} | SoftBan'
+        embed.description = 'Desrespeitou as regras, deu nisso aí.'
+        embed.add_field(name=f'Usuário:', value=f'Tag: `{membro}`\nId: `{membro.id}`', inline=False)
+        embed.add_field(name=f'Staffer:', value=f'Tag: `{ctx.author}`\nCargo: `{ctx.author.top_role.name}`', inline=False)
+        embed.add_field(name=f'Motivo:', value=reason, inline=False)
+        embed.set_footer(text=f'Punido: {membro.name}', icon_url=membro.avatar_url)
+        await ctx.send(embed=embed)
+
+    @commands.command(usage='{}kick [membro] (motivo)', description='Expulsa um membro do servidor. [Expulsar Membros]')
+    @commands.has_permissions(kick_members=True)
+    @commands.bot_has_permissions(kick_members=True)
+    async def kick(self, ctx, membro:discord.Member, *, reason="Não informado."):
+        erro = self.bot.erEmbed(ctx, 'Sem permissão.')
+        if membro.top_role.position >= ctx.author.top_role.position:
+            erro.description = f'Você não tem permissão para expulsar **{membro.name}** (seu cargo é menor ou igual que o dele)'
+
+        if membro.top_role.position >= ctx.me.top_role.position:
+            erro.description = f'Eu não tenho permissão para expulsar **{membro.name}** (cargo dele é maior ou igual que o meu)'
+
+        if not isinstance(erro.description, type(discord.Embed.Empty)):
+            return await ctx.send(embed=erro)
+
+        await membro.kick(reason=f'Por {ctx.author} || Motivo: {reason}')
+
+        embed = self.bot.embed(ctx)
+        embed.title = f'{self.bot.emotes["sora_ban"]} | Kick'
+        embed.description = f'{membro} foi expulso por: `{reason}`'
+        return await ctx.send(embed=embed)
 
     @commands.command()
     @commands.bot_has_permissions(kick_members = True)
