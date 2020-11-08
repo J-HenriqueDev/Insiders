@@ -252,7 +252,7 @@ class Interação(commands.Cog):
           return
 
         gif2 = random.choice(kiss)
-        beija2 = '{} **deu um beijo em** {}'.format(membro.mention, member.mention)
+        beija2 = '{} **deu um beijo em** {}'.format(ctx.author.mention, member.mention)
 
         embed = discord.Embed(title="**Beijo!**", colour=discord.Colour(0x370c5e),
                                 description="{}".format(beija2))
@@ -307,7 +307,7 @@ class Interação(commands.Cog):
           return
         gif = random.choice(cave)
 
-        cave2 = '{} **mandou** {} **de volta pra caverna**'.format(membro.mention, member.mention)
+        cave2 = '{} **mandou** {} **de volta pra caverna**'.format(ctx.author, member.mention)
 
         embed = discord.Embed(title="**Volta pra Caverna!**", colour=discord.Colour(0x370c5e),
                                 description="{}".format(cave2))
@@ -340,7 +340,7 @@ class Interação(commands.Cog):
           return
         gif = random.choice(dance)
 
-        dança2 = '{} **começou a dançar com** {}'.format(membro.mention, member.mention)
+        dança2 = '{} **começou a dançar com** {}'.format(ctx.author, member.mention)
 
         embed = discord.Embed(title="**Dançante!**", colour=discord.Colour(0x370c5e),
                                 description="{}".format(dança2))
@@ -377,7 +377,7 @@ class Interação(commands.Cog):
             if ctx.author == member == membro:
                 await ctx.invoke(self.bot.get_command('endeline'))
         gif = random.choice(attack)
-        ataca2 = '{} **deu um ataque em** {}'.format(membro.mention, member.mention)
+        ataca2 = '{} **deu um ataque em** {}'.format(ctx.author, member.mention)
 
         embed = discord.Embed(title="**Ataque!**", colour=discord.Colour(0x370c5e),
                                 description="{}".format(ataca2))
@@ -466,15 +466,8 @@ class Interação(commands.Cog):
         if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
           await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
           return
-        if membro == None:
-            membro = ctx.author
-        else:
-            if ctx.author == member == membro:
-                await ctx.invoke(self.bot.get_command('endeline'))
-                await msg.delete()
-        """<membro>: Cuidado com isso!"""
         gif = random.choice(highfives)
-        ataca2 = '{} e {} **Deram um High Five!**'.format(membro.mention, member.mention)
+        ataca2 = '{} e {} **Deram um High Five!**'.format(ctx.author.mention, member.mention)
 
         embed = discord.Embed(title="**Shipados!**", colour=discord.Colour(0x370c5e),
                                 description="{}".format(ataca2))

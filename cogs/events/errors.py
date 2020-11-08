@@ -34,30 +34,20 @@ class errors(commands.Cog):
           s = divmod(error.retry_after, 60)
           return await ctx.send(f"**{ctx.author.name}**, aguarde **`{int(s)}`** segundo(s) para poder usar o comando **`{ctx.invoked_with}`** novamente.")
         
-        elif isinstance(error, commands.CheckFailure):
-            pass
-
         elif isinstance(error, commands.DisabledCommand):
           await ctx.send(f"{self.bot._emojis['incorreto']} | **{ctx.author.name}**, o comando **`{ctx.invoked_with}`** está temporariamente desativado.")
         
-        elif isinstance(error, commands.MissingRequiredArgument):
-          await ctx.send('faltando argumentos')
-
-
         elif isinstance(error, commands.CommandError):
             logs = self.bot.get_channel(773515801793134602)
-            em = discord.Embed(
-                colour=self.bot.cor,
-                description=f"```py\n{error}```",
-                timestamp=ctx.message.created_at
-            ).set_author(
+            em = discord.Embed(colour=self.bot.cor,description=f"```py\n{error}```",timestamp=ctx.message.created_at)
+            em.set_author(
                 name=str(ctx.author),
                 icon_url=ctx.author.avatar_url
             )
-            await logs.send(embed=em, content="**Usuário: `{0}` `{0.id}`** | **Comando:** `{1.name}`\n**Servidor: `{2.name}`** `{2.id}` | **Canal: `#{3.name}`** `{3.id}`\n**Mensagem:** `{4.content}`".format(ctx.author, ctx.command, ctx.guild, ctx.channel, ctx.message))
+            await logs.send(embed=em, content="**Usuário: `{0}` `{0.id}`** | **Comando:** `{1.name}`\n | **Canal: `#{3.name}`** `{3.id}`\n**Mensagem:** `{4.content}`".format(ctx.author, ctx.command, ctx.channel, ctx.message))
         
         else:
-            pass
+            raise error
 
 
 def setup(bot):

@@ -75,11 +75,7 @@ class main(discord.ext.commands.Bot):
         if message.author.bot or not message.channel.permissions_for(message.guild.me).send_messages:
           return
        
-        ctx = await self.get_context(message)
-       
-        if not ctx.valid:
-          return
-       
+        ctx = await self.get_context(message)    
         try:
             await self.invoke(ctx)
         except Exception as e:
