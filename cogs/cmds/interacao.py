@@ -112,7 +112,7 @@ class Interação(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
+    '''
     @commands.guild_only()
     @commands.command(name='endeline',hidden=True)
     async def endeline(self, ctx):
@@ -128,6 +128,7 @@ class Interação(commands.Cog):
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
 
         await ctx.send(embed=embed, delete_after=10)
+    '''
 
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.guild_only()
@@ -164,42 +165,13 @@ class Interação(commands.Cog):
             return
         else:
             await msg.delete()
-            await ctx.invoke(self.bot.get_command('putin'), ctx.author, member)
+            author = ctx.author
+            ctx.author = member
+            await ctx.invoke(ctx.command, member=author)
     
 
 
 
-    @commands.guild_only()
-    @commands.command(name='putin')
-    async def putin(self, ctx, member: discord.Member, membro=None):
-        if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
-          await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
-          return
-        gif = random.choice(rage)
-
-        emputece1 = '**SAI DA FRENTE QUE AGORA EU TO PUTA CONTIGO!**. \n\nEU VOU MATAR o ' \
-                    'usuário {}'.format(ctx.author.mention)
-        emputece2 = '{} **Deixou** {} **MAIS PUTO AINDA !**'.format(membro.mention, member.mention)
-
-        embed = discord.Embed(title="**EMPUTECEU MAIS AINDA !**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(emputece2))
-
-        embed.set_image(url="{}".format(gif))
-        embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
-
-        msg = await ctx.send(embed=embed)
-        await msg.add_reaction('😡')
-
-        def check(reaction, user):
-            return user == member and str(reaction.emoji) == "😡"
-
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
-        except:
-            return
-        else:
-            await msg.delete()
-            await ctx.invoke(self.bot.get_command('endeline'))
 
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.guild_only()
@@ -208,14 +180,6 @@ class Interação(commands.Cog):
         if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
           await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
           return
-        if membro == None:
-            membro = ctx.author
-        else:
-            if ctx.author == member == membro:
-                await ctx.invoke(self.bot.get_command('endeline'))
-                await msg.delete()
-
-        """<membro>: Tome cuidado com isso."""
         gif = random.choice(slap)
 
         bate2 = '{} **deu um tapa em** {}'.format(membro.mention, member.mention)
@@ -237,7 +201,9 @@ class Interação(commands.Cog):
             return
         else:
             await msg.delete()
-            await ctx.invoke(self.bot.get_command('bate'), ctx.author, member)
+            author = ctx.author
+            ctx.author = member
+            await ctx.invoke(ctx.command, member=author)
             
 
 
@@ -284,14 +250,7 @@ class Interação(commands.Cog):
         if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
           await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
           return
-        if membro == None:
-            membro = ctx.author
-        else:
-            if ctx.author == member == membro:
-                await ctx.invoke(self.bot.get_command('beija'), member, ctx.author)
 
-        """<membro>: Use isso com amor <3."""
-        #gif1 = random.choice(slap)
         gif2 = random.choice(kiss)
         beija2 = '{} **deu um beijo em** {}'.format(membro.mention, member.mention)
 
@@ -314,7 +273,9 @@ class Interação(commands.Cog):
             return
         else:
             await msg.delete()
-            await ctx.invoke(self.bot.get_command('beija'), ctx.author, member)
+            author = ctx.author
+            ctx.author = member
+            await ctx.invoke(ctx.command, member=author)
 
     @commands.command()
     async def tnc(self, ctx):
@@ -344,14 +305,6 @@ class Interação(commands.Cog):
         if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
           await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
           return
-        if membro == None:
-            membro = ctx.author
-        else:
-            if ctx.author == member == membro:
-                await ctx.invoke(self.bot.get_command('endeline'))
-                await msg.delete()
-
-        """<membro>: Use isso com amor <3."""
         gif = random.choice(cave)
 
         cave2 = '{} **mandou** {} **de volta pra caverna**'.format(membro.mention, member.mention)
@@ -374,7 +327,9 @@ class Interação(commands.Cog):
             return
         else:
             await msg.delete()
-            await ctx.invoke(self.bot.get_command('voltapracaverna'), ctx.author, member)
+            author = ctx.author
+            ctx.author = member
+            await ctx.invoke(ctx.command, member=author)
     
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.guild_only()
@@ -383,14 +338,6 @@ class Interação(commands.Cog):
         if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
           await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
           return
-        if membro == None:
-            membro = ctx.author
-        else:
-            if ctx.author == member == membro:
-                await ctx.invoke(self.bot.get_command('endeline'))
-                await msg.delete()
-
-        """<membro>: Use isso com amor <3."""
         gif = random.choice(dance)
 
         dança2 = '{} **começou a dançar com** {}'.format(membro.mention, member.mention)
@@ -413,7 +360,9 @@ class Interação(commands.Cog):
             return
         else:
             await msg.delete()
-            await ctx.invoke(self.bot.get_command('dança'), ctx.author, member)
+            author = ctx.author
+            ctx.author = member
+            await ctx.invoke(ctx.command, member=author)
 
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.guild_only()
@@ -427,8 +376,6 @@ class Interação(commands.Cog):
         else:
             if ctx.author == member == membro:
                 await ctx.invoke(self.bot.get_command('endeline'))
-                #await msg.delete()
-        """<membro>: Cuidado com isso!"""
         gif = random.choice(attack)
         ataca2 = '{} **deu um ataque em** {}'.format(membro.mention, member.mention)
 
@@ -449,7 +396,9 @@ class Interação(commands.Cog):
             return
         else:
             await msg.delete()
-            await ctx.invoke(self.bot.get_command('ataca'), ctx.author, member)
+            author = ctx.author
+            ctx.author = member
+            await ctx.invoke(ctx.command, member=author)
             
 
     @commands.guild_only()
@@ -545,7 +494,9 @@ class Interação(commands.Cog):
             return
         else:
             await msg.delete()
-            await ctx.invoke(self.bot.get_command('highfive'), ctx.author, member)
+            author = ctx.author
+            ctx.author = member
+            await ctx.invoke(ctx.command, member=author)
             
 
 
