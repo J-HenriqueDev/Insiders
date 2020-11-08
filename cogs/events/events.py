@@ -26,7 +26,7 @@ class events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self,message):
-        if message.channel.id == 772972553769713735:    
+        if message.channel.id == [772972553769713735,775080884138147850]:    
             await message.add_reaction(self.bot._emojis["correto"].replace("<"," ").replace(">"," "))
             return await message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
 
