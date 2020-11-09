@@ -16,10 +16,10 @@ class logs_messages(commands.Cog):
     #ok
     @commands.Cog.listener()
     async def on_message_delete(self,message):
-        if message is None:
-            return
             if message.author.bot == False:
-                if message.channel.id == [772972558605090836,772972570752319488]:
+                if message.channel.id == 772972558605090836:
+                    return
+                elif message.channel.id == 772972570752319488:
                     return
                 else:
                     embed = discord.Embed(color=self.bot.cor)
