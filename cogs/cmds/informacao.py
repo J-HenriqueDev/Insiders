@@ -131,6 +131,10 @@ class informacao(commands.Cog):
           apelido = "Não defindo"
       else:
         apelido = usuario.display_name
+      if usuario.top_role == "@everyone":
+        top_cargo = "Nenhum Cargo"
+      else:
+        top_cargp = usuario.top_role
       if usuario.avatar_url_as()  == "":
         img = "https://i.imgur.com/To9mDVT.png"
       else:
@@ -163,7 +167,7 @@ class informacao(commands.Cog):
       embed.add_field(name=f"{self.bot._emojis['nome']} Apelido", value = "``"+str(apelido)+"``")
       embed.add_field(name=f"{self.bot._emojis['notas']} Criação da conta", value =f"``{conta_criada}`` ({conta_dias} dias)")
       embed.add_field(name=f"{self.bot._emojis['entrou']} Entrou aqui em", value = "``"+str(entrou_servidor)+"``")
-      embed.add_field(name=f"{self.bot._emojis['toprole']} Maior cargo", value = "``"+str(usuario.top_role)+"``")
+      embed.add_field(name=f"{self.bot._emojis['toprole']} Maior cargo", value = "``"+str(top_cargo)+"``")
       embed.add_field(name=f"{self.bot._emojis['roles']} Cargos", value = "``"+str(cargos)+"/"+str(cargos2)+"``")
       embed.add_field(name=f"{self.bot._emojis['bots']} Bot", value = "``"+str(bot)+"``")
       embed.add_field(name=f"{self.bot._emojis['status']} Status", value = "``"+str(stat)+"``")
