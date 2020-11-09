@@ -134,7 +134,7 @@ class informacao(commands.Cog):
       if usuario.top_role == "@everyone":
         top_cargo = "Nenhum Cargo"
       else:
-        top_cargp = usuario.top_role
+        top_cargo = usuario.top_role
       if usuario.avatar_url_as()  == "":
         img = "https://i.imgur.com/To9mDVT.png"
       else:
