@@ -115,6 +115,20 @@ class informacao(commands.Cog):
 
     @commands.bot_has_permissions(embed_links=True)
     @commands.guild_only()
+    @commands.command(description="Mostra o icone do servidor",pass_context=True, no_pm=True, aliases=["savatar"])
+    async def serveravatar(self, ctx):
+      if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
+        await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
+        return
+      server = ctx.guild
+      s=discord.Embed(color=self.bot.cor)
+      s.set_author(name="Imagem do servidor {}".format(server.name), icon_url=server.icon_url, url=server.icon_url_as(format="png", size=1024))
+      s.set_image(url=server.icon_url_as(format="png", size=1024))
+      s.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
+      await ctx.send(embed=s)
+    
+    @commands.bot_has_permissions(embed_links=True)
+    @commands.guild_only()
     @commands.command(description='Mostra as informações de um usuário.',usage='c.userinfo @TOBIAS',aliases=['uinfo', 'usuario'])
     async def userinfo(self, ctx, *, user: discord.Member = None):
       if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:

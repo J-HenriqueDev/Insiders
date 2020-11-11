@@ -2,6 +2,7 @@ import discord
 import pytz
 from datetime import datetime
 from discord.ext import commands
+from traceback import format_exc
 
 
 class errors(commands.Cog):
@@ -38,14 +39,17 @@ class errors(commands.Cog):
           await ctx.send(f"{self.bot._emojis['incorreto']} | **{ctx.author.name}**, o comando **`{ctx.invoked_with}`** está temporariamente desativado.")
         
         elif isinstance(error, commands.CommandError):
+          try:
+            raise error
+          except:
             logs = self.bot.get_channel(773515801793134602)
-            em = discord.Embed(colour=self.bot.cor,description=f"```py\n{error}```",timestamp=ctx.message.created_at)
+            em = discord.Embed(colour=self.bot.cor,description=f"```py\n{format_exc()}```",timestamp=ctx.message.created_at)
             em.set_author(
                 name=str(ctx.author),
                 icon_url=ctx.author.avatar_url
             )
-            await logs.send(embed=em, content="**Usuário: `{0}` `{0.id}`** | **Comando:** `{1.name}`\n | **Canal: `#{3.name}`** `{3.id}`\n**Mensagem:** `{4.content}`".format(ctx.author, ctx.command, ctx.channel, ctx.message))
-        
+            await logs.send(embed=em, content="**Usuário: `{0}` `{0.id}`** | **Comando:** `{1.name}`\n**Servidor: `{2.name}`** `{2.id}` | **Canal: `#{3.name}`** `{3.id}`\n**Mensagem:** `{4.content}`".format(ctx.author, ctx.command, ctx.guild, ctx.channel, ctx.message))
+
         else:
             raise error
 

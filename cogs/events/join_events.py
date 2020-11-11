@@ -7,7 +7,7 @@ import pytz
 from io import BytesIO
 from captcha.image import ImageCaptcha
 from random import randint
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageFilter
 from asyncio import sleep
 import requests
 
@@ -60,7 +60,7 @@ class bemvindo(commands.Cog):
             saida.putalpha(mask)
 
             fundo = Image.open('cogs/img/bem-vindo.png')
-            fonte = ImageFont.truetype('cogs/img/college.ttf',42)
+            fonte = ImageFont.truetype('cogs/img/American Captain.ttf',42)
             escrever = ImageDraw.Draw(fundo)
             nome_user = str(member) if len(str(member)) <= 50 else str(member)[:50]
             fundo_x, _ = fundo.size
@@ -93,6 +93,54 @@ class bemvindo(commands.Cog):
         texto = "<a:emoji:760195465727180852> | **Membros** : "+str(membros).replace("0", "0⃣").replace("1", "1⃣").replace("2", "2⃣").replace("3", "3⃣").replace("4", "4⃣").replace("5", "5⃣").replace("6", "6⃣").replace("7", "7⃣").replace("8", "8⃣").replace("9", "9⃣")
         txt = f"{member} saiu do servidor."
         await canal.edit(topic=texto, reason=txt)
+
+    @commands.command()
+    async def spotify(self, ctx, member: discord.Member = None):
+        if member is None:
+            member = ctx.author
+
+        presence = member.activity
+        url = requests.get(presence.album_cover_url)
+        thumbnail = Image.open(BytesIO(url.content)).resize((415, 415), Image.ANTIALIAS)
+        base = Image.new('RGBA', (1100, 415), (0,0,0,0))
+        base.paste(thumbnail, (0, 0))
+        borrado = Image.open(BytesIO(url.content)).resize((715, 715), Image.ANTIALIAS)
+        im2 = borrado.filter(ImageFilter.GaussianBlur(radius = 8)) 
+        base.paste(im2, (400,0))
+
+        ################################################
+        logo = Image.open('cogs/img/spotlogo.png').resize((100, 100), Image.ANTIALIAS)
+        base.paste(logo, (980,10), logo.convert('RGBA'))
+        
+        end = datetime.utcnow() - presence.start
+        decorrido = end.seconds
+        ##################################################
+        total = int(presence.duration.seconds)
+
+        x = (700 * decorrido) / total   
+        ###########################################
+
+        end = presence.end - datetime.utcnow()
+        end = str(presence.duration - end)[2:7]
+        dur = str(presence.duration)[2:7]
+
+        #################################################
+
+        fonte = ImageFont.truetype('cogs/img/American Captain.ttf', 35)
+        escrever = ImageDraw.Draw(base)
+        escrever.text(xy=(410,250), text=str(presence.title.capitalize()),fill=(240,248,255),font=fonte)
+        escrever.rectangle([(400,400), (1100,415)], fill=(40,40,40))
+        escrever.rectangle([(400, 400), (x + 400, 415)], fill=(0,255,0))
+        escrever.text(xy=(410,300), text=str(presence.artist),fill=(46, 189, 89),font=fonte)
+
+        ########################################################
+        escrever.text(xy=(420,360), text=str(end),fill=(0,255,0),font=fonte)
+        escrever.text(xy=(1000,360), text=str(dur),fill=(0,191,255),font=fonte)
+
+        #escrever.text(xy=(400,530), text=str(end),fill=(0,0,0),font=fonte)
+        base.save('cogs/img/imagem1.png')
+        #base.show()
+        await ctx.send(file=discord.File('cogs/img/imagem1.png'))
 
    
 def setup(bot):

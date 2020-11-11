@@ -46,7 +46,7 @@ class starboard(Cog):
 
             embed = Embed(
                 title="Uma nova pérola apareceu!",
-                description=f"Um [brilho]({message.jump_url}) está vindo do canal {message.channel.mention}!\n\n" + (message.content or ''),
+                description=f"Um [brilho]({message.jump_url}) está vindo do canal {message.channel.mention}!\n\n```{message.content}```",
                 color=self.bot.cor,
                 url=message.jump_url
             ).set_footer(
