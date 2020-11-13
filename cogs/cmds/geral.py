@@ -35,11 +35,13 @@ class Geral(commands.Cog):
         if member is None:
             member = ctx.author
 
-        presence = next(filter(lambda activity: activity.type.name == 'listening', member.activities)): if len(member.activities) > -1 else None
+        presence = list(filter(lambda activity: activity.type.name == 'listening', member.activities)) if len(
+            member.activities) > 0 else None
         if presence is None:
             embed = self.bot.erEmbed(ctx, 'Sem Músicas.')
             embed.description = f'**{ctx.author.name}** você não está ouvindo nenhuma música no momento.'
             return await ctx.send(embed=embed)
+        presence = presence[0]
 
         ########################################################
 
