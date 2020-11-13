@@ -94,53 +94,91 @@ class bemvindo(commands.Cog):
         txt = f"{member} saiu do servidor."
         await canal.edit(topic=texto, reason=txt)
 
-    @commands.command()
+    @commands.bot_has_permissions(attach_files=True)
+    @commands.guild_only()
+    @commands.command(description='Mostra as informações da música no spotify que você está ouvindo.',usage='c.spotify @TOBIAS',aliases=['sptfy','musica'])
     async def spotify(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
 
-        presence = member.activity
-        url = requests.get(presence.album_cover_url)
-        thumbnail = Image.open(BytesIO(url.content)).resize((415, 415), Image.ANTIALIAS)
-        base = Image.new('RGBA', (1100, 415), (0,0,0,0))
-        base.paste(thumbnail, (0, 0))
-        borrado = Image.open(BytesIO(url.content)).resize((715, 715), Image.ANTIALIAS)
-        im2 = borrado.filter(ImageFilter.GaussianBlur(radius = 8)) 
-        base.paste(im2, (400,0))
-
-        ################################################
-        logo = Image.open('cogs/img/spotlogo.png').resize((100, 100), Image.ANTIALIAS)
-        base.paste(logo, (980,10), logo.convert('RGBA'))
-        
-        end = datetime.utcnow() - presence.start
-        decorrido = end.seconds
-        ##################################################
-        total = int(presence.duration.seconds)
-
-        x = (700 * decorrido) / total   
-        ###########################################
-
-        end = presence.end - datetime.utcnow()
-        end = str(presence.duration - end)[2:7]
-        dur = str(presence.duration)[2:7]
-
-        #################################################
-
-        fonte = ImageFont.truetype('cogs/img/American Captain.ttf', 35)
-        escrever = ImageDraw.Draw(base)
-        escrever.text(xy=(410,250), text=str(presence.title.capitalize()),fill=(240,248,255),font=fonte)
-        escrever.rectangle([(400,400), (1100,415)], fill=(40,40,40))
-        escrever.rectangle([(400, 400), (x + 400, 415)], fill=(0,255,0))
-        escrever.text(xy=(410,300), text=str(presence.artist),fill=(46, 189, 89),font=fonte)
+        activities = member.activities
+        presence = None
+        ouvindo_algo = False
+        if len(activities) > 0:
+            for activity in activities:
+                if activity.type.name == 'listening':
+                    ouvindo_algo = True
+                    presence = activity
+                    break
+        if not ouvindo_algo:
+            embed = self.bot.erEmbed(ctx, 'Sem Músicas.')
+            embed.description = f'**{ctx.author.name}** você não está ouvindo nenhuma música no momento.'
+            return await ctx.send(embed=embed)
 
         ########################################################
-        escrever.text(xy=(420,360), text=str(end),fill=(0,255,0),font=fonte)
-        escrever.text(xy=(1000,360), text=str(dur),fill=(0,191,255),font=fonte)
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.get(str(presence.album_cover_url)) as resp:
+                if resp.status == 200:
+                    response = BytesIO(await resp.read())
+                else:
+                    return
 
-        #escrever.text(xy=(400,530), text=str(end),fill=(0,0,0),font=fonte)
-        base.save('cogs/img/imagem1.png')
-        #base.show()
-        await ctx.send(file=discord.File('cogs/img/imagem1.png'))
+            thumbnail = Image.open(response).resize((415, 415), Image.ANTIALIAS)
+            base = Image.new('RGBA', (1100, 415), (0,0,0,0))
+            base.paste(thumbnail, (0, 0))
+            borrado = Image.open(response).resize((715, 615), Image.ANTIALIAS).filter(ImageFilter.GaussianBlur(radius = 8)) 
+            if borrado.mode != 'RGBA':
+                borrado = borrado.convert('RGBA')
+
+            width, height = borrado.size
+            gradient = Image.new('L', (1, height), color=0xFF)
+
+            for y in range(height):
+                gradient.putpixel((0, y), int(255 * (1 - 1.5 * float(y)/width)))
+            
+            gradient = gradient.rotate(180)
+            alpha = gradient.resize(borrado.size)
+
+            black_im = Image.new('RGBA', (width, height), color=0)
+            black_im.putalpha(alpha)
+
+            gradient_im = Image.alpha_composite(borrado, black_im)
+            base.paste(gradient_im, (415,-150))
+
+            ########################################################
+            logo = Image.open('cogs/img/spotlogo.png').resize((100, 100), Image.ANTIALIAS)
+            base.paste(logo, (420,10), logo.convert('RGBA'))
+            ########################################################          
+            end = datetime.utcnow() - presence.start
+            decorrido = end.seconds
+            ########################################################
+            total = int(presence.duration.seconds)
+
+            x = (700 * decorrido) / total   
+            ########################################################
+
+            end = presence.end - datetime.utcnow()
+            end = str(presence.duration - end)[2:7]
+            dur = str(presence.duration)[2:7]
+
+            ########################################################
+
+            fonte = ImageFont.truetype('cogs/img/American Captain.ttf', 35)
+            escrever = ImageDraw.Draw(base)
+            escrever.text(xy=(430,250), text=str(presence.title.capitalize()),fill=(240,248,255),font=fonte)
+            escrever.rectangle([(415,400), (1100,415)], fill=(40,40,40))
+            escrever.rectangle([(415, 400), (x + 400, 415)], fill=(0,255,0))
+            escrever.text(xy=(430,300), text=str(presence.artist),fill=(46, 189, 89),font=fonte)
+            ########################################################
+            escrever.text(xy=(430,360), text=str(end),fill=(0,255,0),font=fonte)
+            escrever.text(xy=(1020,360), text=str(dur),fill=(240,248,255),font=fonte)
+            ########################################################
+            arr = BytesIO()
+            base.save(arr, format='PNG')
+            arr.seek(0)
+            file = discord.File(arr, filename='imagem1.png')
+            await ctx.send(file=file)
 
    
 def setup(bot):

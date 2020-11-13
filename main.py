@@ -49,7 +49,8 @@ class main(discord.ext.commands.Bot):
         
         self.token = 'blz,talvez outro dia.'
         self.cor = 0xf10cdb
-       
+        self.color = 0x36393F
+
         print("( * ) | Tentando se conectar ao banco de dados...")
         try:
             mongo = MongoClient(self.database)
@@ -93,7 +94,20 @@ class main(discord.ext.commands.Bot):
         print(f'Guilds: {len(self.guilds)}')
         print('---------------------------------')
         
-        
+    def embed(self, ctx, invisible=False):
+        color = self.cor if invisible else self.color
+        emb = discord.Embed(color=color)
+        emb.set_footer(text=self.user.name+" © 2020", icon_url=self.user.avatar_url_as())
+        emb.timestamp = ctx.message.created_at
+        return emb
+
+    def erEmbed(self, ctx, error='Erro!'):
+        emb = discord.Embed(title=f':x: | {error}', color=0xDD2E44)
+        emb.set_footer(text=self.user.name+" © 2020", icon_url=self.user.avatar_url_as())
+        emb.timestamp = ctx.message.created_at
+        return emb
+
+
 bot = main()
 
 if __name__ == '__main__':
