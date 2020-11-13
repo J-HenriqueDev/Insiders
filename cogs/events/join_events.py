@@ -101,16 +101,8 @@ class bemvindo(commands.Cog):
         if member is None:
             member = ctx.author
 
-        activities = member.activities
-        presence = None
-        ouvindo_algo = False
-        if len(activities) > 0:
-            for activity in activities:
-                if activity.type.name == 'listening':
-                    ouvindo_algo = True
-                    presence = activity
-                    break
-        if not ouvindo_algo:
+        presence = next(filter(lambda activity: activity.type.name == 'listening', member.activities)) if len(member.activities) > 0 else None
+        if presence is None:
             embed = self.bot.erEmbed(ctx, 'Sem Músicas.')
             embed.description = f'**{ctx.author.name}** você não está ouvindo nenhuma música no momento.'
             return await ctx.send(embed=embed)
