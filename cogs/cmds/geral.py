@@ -22,7 +22,8 @@ class Geral(commands.Cog):
           return
         embed = discord.Embed(title="🏓 Pong!",
                               description=f' No Momento estou com: **{round(self.bot.latency * 1000)}ms**.',
-                              color=0x36393f)
+                              color=0x36393f,
+                              timestamp=datetime.datetime.utcnow())
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
         await ctx.message.delete()
         await ctx.send(embed=embed, delete_after=90)
@@ -131,7 +132,7 @@ class Geral(commands.Cog):
             else:
                 aliases = "Nenhuma abreviação."
 
-            embed = discord.Embed(colour=self.bot.cor)
+            embed = discord.Embed(colour=self.bot.cor,timestamp=datetime.datetime.utcnow())
             embed.set_author(name=f"Informações do comando {nome}.")
             embed.set_thumbnail(url=self.bot.user.avatar_url)
             embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
@@ -141,7 +142,7 @@ class Geral(commands.Cog):
             return await ctx.send(embed=embed)
     
 
-        em = discord.Embed(colour=self.bot.cor, description="\n**[Prefixos]:** `c.comando`, `C.comando`\n")
+        em = discord.Embed(colour=self.bot.cor, description="\n**[Prefixos]:** `c.comando`, `C.comando`\n",timestamp=datetime.datetime.utcnow())
         em.set_author(name=f"{self.bot.user.name} | Comandos")
         em.set_thumbnail(url=self.bot.user.avatar_url)
         
@@ -255,7 +256,8 @@ class Geral(commands.Cog):
             for x in range(math.ceil(len(msg)/2000)):
                 while msg[n-1:n] != " ":
                     n -= 1
-                s=discord.Embed(description=msg[i:n])
+                s=discord.Embed(description=msg[i:n],timestamp=datetime.datetime.utcnow())
+                s.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
                 i += n
                 n += n
                 if i <= 2000:
@@ -408,18 +410,18 @@ class Geral(commands.Cog):
         if numero>100:
             numb = 100
             await ctx.channel.purge(limit=numb)
-            embed=discord.Embed(description=f"{correto} **|** Foram apagadas **{numb}** mensagens.", color=self.bot.cor)
+            embed=discord.Embed(description=f"{correto} **|** Foram apagadas **{numb}** mensagens.", color=self.bot.cor,timestamp=datetime.datetime.utcnow())
             msg = await ctx.send(embed=embed)
             await asyncio.sleep(10)
             await msg.delete()
         elif numero>0:
             await ctx.channel.purge(limit=numero)
-            embed=discord.Embed(description=f"{correto} **|** Foram apagadas **{numero}** mensagens.", color=self.bot.cor)
+            embed=discord.Embed(description=f"{correto} **|** Foram apagadas **{numero}** mensagens.", color=self.bot.cor,timestamp=datetime.datetime.utcnow())
             msg = await ctx.send(embed=embed)
             await asyncio.sleep(10)
             await msg.delete()
         else:
-            embed=discord.Embed(description=f"{incorreto} **|** Insirá um valor válido entre (1 a 100).", color=self.bot.cor)
+            embed=discord.Embed(description=f"{incorreto} **|** Insirá um valor válido entre (1 a 100).", color=self.bot.cor,timestamp=datetime.datetime.utcnow())
             msg = await ctx.send(embed=embed)
             await asyncio.sleep(10)
             await msg.delete()

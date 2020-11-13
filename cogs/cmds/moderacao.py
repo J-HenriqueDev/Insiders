@@ -135,7 +135,7 @@ class moderacao(commands.Cog):
 
             # Não vou usar o self.bot.embed, já que esse embed sobescreve tudo.
             embed = self.bot.embed(ctx)
-            embed.title = f'{self.bot.emotes["sora_ban"]} | Ban'
+            embed.title = f'{self.bot._emojis["ban"]} | Ban'
             embed.description = 'Desrespeitou as regras, deu nisso aí.'
             embed.add_field(name=f'Usuário:', value=f'Tag: `{membro}`\nId: `{membro.id}`', inline=False)
             embed.add_field(name=f'Staffer:', value=f'Tag: `{ctx.author}`\nCargo: `{ctx.author.top_role.name}`', inline=False)
@@ -169,7 +169,7 @@ class moderacao(commands.Cog):
 
             member = await self.bot.fetch_user(member.id)
             embed = self.bot.embed(ctx)
-            embed.title = f'{self.bot.emotes["sora_ban"]} | Ban'
+            embed.title = f'{self.bot._emojis["ban"]} | Ban'
             embed.description = 'Desrespeitou as regras deu nisso ai.'
             embed.add_field(name=f'Usuário:', value=f'Tag: `{member}`\nId: `{member.id}`', inline=False)
             embed.add_field(name=f'Staffer:', value=f'Menção: {ctx.author.mention}\nCargo: `{ctx.author.top_role.name}`', inline=False)
@@ -203,7 +203,7 @@ class moderacao(commands.Cog):
         await membro.unban(reason=f'Por {ctx.author} || Motivo: {reason}')
         
         embed = self.bot.embed(ctx)
-        embed.title = f'{self.bot.emotes["sora_ban"]} | SoftBan'
+        embed.title = f'{self.bot._emojis["ban"]} | SoftBan'
         embed.description = 'Desrespeitou as regras, deu nisso aí.'
         embed.add_field(name=f'Usuário:', value=f'Tag: `{membro}`\nId: `{membro.id}`', inline=False)
         embed.add_field(name=f'Staffer:', value=f'Tag: `{ctx.author}`\nCargo: `{ctx.author.top_role.name}`', inline=False)
@@ -228,7 +228,7 @@ class moderacao(commands.Cog):
         await membro.kick(reason=f'Por {ctx.author} || Motivo: {reason}')
 
         embed = self.bot.embed(ctx)
-        embed.title = f'{self.bot.emotes["sora_ban"]} | Kick'
+        embed.title = f'{self.bot._emojis["ban"]} | Kick'
         embed.description = f'{membro} foi expulso por: `{reason}`'
         return await ctx.send(embed=embed)
 

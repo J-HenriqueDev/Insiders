@@ -1,5 +1,6 @@
 from discord.ext import commands
 import asyncio
+from datetime import datetime
 from contextlib import redirect_stdout
 import inspect
 import discord
@@ -69,7 +70,7 @@ class Owner(commands.Cog):
           return
         if args is None:
             embed = discord.Embed(description="**|** Olá {}, você não inseriu uma variável".format(ctx.author.mention),
-                                  color=self.bot.cor)
+                                  color=self.bot.cor,timestamp=datetime.utcnow())
             await ctx.send(embed=embed)
             return
 
@@ -122,7 +123,8 @@ class Owner(commands.Cog):
             self.bot.reload_extension(f"cogs.{cog}")
             embed = discord.Embed(
                 colour=self.bot.cor,
-                description=(f"**[Sucesso] O Modulo `{cog}` foi recarregado corretamente!**"))
+                description=(f"**[Sucesso] O Modulo `{cog}` foi recarregado corretamente!**"),
+                timestamp=datetime.utcnow())
 
             await ctx.send(embed=embed, delete_after=20)
         except Exception as e:
@@ -142,7 +144,7 @@ class Owner(commands.Cog):
         import os
         import sys
         await ctx.message.delete()
-        embed = discord.Embed(description=f"<:like:760197986609004584> O **{ctx.me.name}** está sendo reiniciado!", color=self.bot.cor)
+        embed = discord.Embed(description=f"<:like:760197986609004584> O **{ctx.me.name}** está sendo reiniciado!", color=self.bot.cor,timestamp=datetime.utcnow())
         await ctx.send(embed=embed)
         print(f"REINICIAR USADO POR : {ctx.author}")
         def reiniciar_code():

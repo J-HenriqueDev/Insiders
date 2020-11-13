@@ -42,7 +42,7 @@ class informacao(commands.Cog):
           usuario = user.avatar_url
           texto = f"Olá {ctx.author.name}, está é a imagem do usuário {user.name}"
 
-      embed = discord.Embed(title=texto, color=self.bot.cor)
+      embed = discord.Embed(title=texto, color=self.bot.cor,timestamp=datetime.utcnow())
       embed.set_image(url=usuario)
       embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
       await ctx.send(embed=embed)
@@ -55,7 +55,7 @@ class informacao(commands.Cog):
         return
       mem = botstatus.get_memory()
       dono = await self.bot.fetch_user(478266814204477448)
-      embed = discord.Embed(description="Olá {}, este é o perfil do {} e nele contém algumas informações.".format(ctx.author.name, self.bot.user.name),colour=self.bot.cor)
+      embed = discord.Embed(description="Olá {}, este é o perfil do {} e nele contém algumas informações.".format(ctx.author.name, self.bot.user.name),colour=self.bot.cor,timestamp=datetime.utcnow())
       embed.set_author(name="Informações do {}".format(self.bot.user.name), icon_url=ctx.author.avatar_url_as())
       embed.add_field(name=f"{self.bot._emojis['dono']} Criador", value = f'``{dono}``')
       embed.add_field(name=f"{self.bot._emojis['tag']} Tag", value = '``'+str(self.bot.user)+'``')
@@ -82,6 +82,7 @@ class informacao(commands.Cog):
       servidor = ctx.guild
       if servidor.icon_url_as(format="png") == "":
         img = "https://i.imgur.com/To9mDVT.png"
+
       else:
 
         img  = servidor.icon_url
@@ -97,7 +98,7 @@ class informacao(commands.Cog):
         texto = f"{self.bot._emojis['texto']} : ``"+str(len(servidor.text_channels))+f"``{self.bot._emojis['voz']}  : ``"+str(len(servidor.voice_channels))+"``"
         cargos = len([y.id for y in servidor.roles])
         emojis = len([y.id for y in servidor.emojis])
-        embed = discord.Embed(description="Olá {}, aqui estão todas as informaçôes do servidor `{}`.".format(ctx.author.name, servidor.name),colour=self.bot.cor)
+        embed = discord.Embed(timestamp=datetime.utcnow(),description="Olá {}, aqui estão todas as informaçôes do servidor `{}`.".format(ctx.author.name, servidor.name),colour=self.bot.cor)
         embed.set_author(name=f"Informação do servidor", icon_url=ctx.author.avatar_url_as())
         embed.add_field(name=f"{self.bot._emojis['dono']} Dono", value = "``"+str(servidor.owner)+"``")
         embed.add_field(name=f"{self.bot._emojis['nome']} Nome", value = "``"+str(servidor.name)+"``")
@@ -110,6 +111,13 @@ class informacao(commands.Cog):
         embed.add_field(name=f"{self.bot._emojis['cadeado']} Verificação", value = "``"+str(servidor.verification_level).replace("none","Nenhuma").replace("low","Baixa").replace("medium","Média").replace("high","Alta").replace("extreme","Muito alta")+"``")
         embed.add_field(name=f" Usuários"+" ["+str(geral)+"]", value = usuarios)
         embed.set_thumbnail(url=img)
+        if ctx.guild.banner:
+            embed.set_image(url=servidor.banner_url)
+        elif ctx.guild.splash_url:
+            embed.set_image(url=servidor.splash_url)
+        elif servidor.discovery_splash_url:
+            embed.set_image(url=ctx.guild.discovery_splash_url)
+
         embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
         await ctx.send(embed = embed)
 
@@ -121,12 +129,31 @@ class informacao(commands.Cog):
         await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
         return
       server = ctx.guild
-      s=discord.Embed(color=self.bot.cor)
+      s=discord.Embed(color=self.bot.cor,timestamp=datetime.utcnow())
       s.set_author(name="Imagem do servidor {}".format(server.name), icon_url=server.icon_url, url=server.icon_url_as(format="png", size=1024))
       s.set_image(url=server.icon_url_as(format="png", size=1024))
       s.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
       await ctx.send(embed=s)
-    
+
+    @commands.guild_only()
+    @commands.cooldown(1, 4, commands.BucketType.user)
+    @commands.command(name="serverbanner",description="Mostra o banner do servidor",pass_context=True, no_pm=True, aliases=["sbanner"])
+    async def _server_banner(self, ctx):
+        if not ctx.guild.banner:
+            embed = self.bot.erEmbed(ctx, 'Banner Inexistente.')
+            embed.description = f"Este servidor não possui um banner."
+            return await ctx.send(embed=embed)
+        if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
+            await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<", " ").replace(">", " "))
+            return
+        embed = discord.Embed(title=f'Banner deste servidor!',
+                              colour=self.bot.cor,
+                              description='** **',
+                              timestamp=datetime.utcnow())
+        embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
+        embed.set_image(url=ctx.guild.banner_url)
+        await ctx.send(embed=embed)
+
     @commands.bot_has_permissions(embed_links=True)
     @commands.guild_only()
     @commands.command(description='Mostra as informações de um usuário.',usage='c.userinfo @TOBIAS',aliases=['uinfo', 'usuario'])
@@ -174,7 +201,7 @@ class informacao(commands.Cog):
       afk = "Ausente"
       stat = str(usuario.status).replace("online",on).replace("offline",off).replace("dnd",dnd).replace("idle",afk)
       cargos2 = len([y.id for y in ctx.guild.roles])
-      embed = discord.Embed(description=titulo,colour=self.bot.cor)
+      embed = discord.Embed(description=titulo,colour=self.bot.cor,timestamp=datetime.utcnow())
       embed.set_author(name=f"Informação de perfil", icon_url=ctx.author.avatar_url_as())
       embed.add_field(name=f"{self.bot._emojis['tag']} Tag", value = "``"+str(usuario.name)+"#"+str(usuario.discriminator)+"``")
       embed.add_field(name=f"{self.bot._emojis['ip']} Id", value = "``"+str(usuario.id)+"``")
@@ -218,7 +245,7 @@ class informacao(commands.Cog):
           else:
             channel = discord.utils.get(ctx.guild.channels, name=num)
         if channel is None:
-          embed = discord.Embed(description="{} **|** O canal {} não existe.".format(self.bot._emojis['help'], num), color=self.bot.cor)
+          embed = discord.Embed(description="{} **|** O canal {} não existe.".format(self.bot._emojis['help'], num), color=self.bot.cor,timestamp=datetime.utcnow())
           await ctx.send(embed=embed)
           return  
 
@@ -227,12 +254,12 @@ class informacao(commands.Cog):
         elif channel in list(ctx.guild.voice_channels):
           channel_type = "Audio"
         else:
-          embed = discord.Embed(description="{} **|** O canal {} não existe.".format(self.bot._emojis['help'], num), color=self.bot.cor)
+          embed = discord.Embed(description="{} **|** O canal {} não existe.".format(self.bot._emojis['help'], num), color=self.bot.cor,timestamp=datetime.utcnow())
           await ctx.send(embed=embed)
           return  
          
         channel_created = str(channel.created_at.strftime("%H:%M:%S - %d/%m/20%y"))
-        embed = discord.Embed(description="Olá {}, esta são as informações do canal {}.".format(ctx.author.name, channel.mention),colour=self.bot.cor)
+        embed = discord.Embed(description="Olá {}, esta são as informações do canal {}.".format(ctx.author.name, channel.mention),colour=self.bot.cor,timestamp=datetime.utcnow())
         embed.set_author(name=f"Informações do canal", icon_url=ctx.author.avatar_url_as())
         embed.add_field(name=f"{self.bot._emojis['nome']} Nome", value = "``"+str(channel.name)+"``",inline=False)
         embed.add_field(name=f"{self.bot._emojis['ip']} ID", value = "``"+str(channel.id)+"``",inline=False)
@@ -278,7 +305,7 @@ class informacao(commands.Cog):
         if role is None:
             return await ctx.send(f'**{ctx.author.name}** você não mencionou um cargo.')
         criado_em = str(role.created_at.strftime("%H:%M:%S - %d/%m/20%y"))
-        embed = discord.Embed(color=self.bot.cor)
+        embed = discord.Embed(color=self.bot.cor,timestamp=datetime.utcnow())
         embed.set_author(name="Informação do cargo", icon_url=ctx.author.avatar_url_as())
         embed.add_field(name=f"{self.bot._emojis['tag']} Nome:", value="``"+str(role.name)+"``")
         embed.add_field(name=f"{self.bot._emojis['ip']} ID:", value=f"``"+str(role.id)+"``")

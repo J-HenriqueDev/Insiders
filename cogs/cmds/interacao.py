@@ -148,7 +148,7 @@ class Interação(commands.Cog):
 
         emputece2 = '{} **Deixou** {} **PUTO!**'.format(membro.mention, member.mention)
         embed = discord.Embed(title="**EMPUTECEU!**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(emputece2))
+                                description="{}".format(emputece2),timestamp=datetime.datetime.utcnow())
 
         embed.set_image(url="{}".format(gif))
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
@@ -184,7 +184,7 @@ class Interação(commands.Cog):
 
         bate2 = '{} **deu um tapa em** {}'.format(membro.mention, member.mention)
         embed = discord.Embed(title="**Tapão!**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(bate2))
+                                description="{}".format(bate2),timestamp=datetime.datetime.utcnow())
 
         embed.set_image(url="{}".format(gif))
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
@@ -221,7 +221,7 @@ class Interação(commands.Cog):
         abraça2 = '{} **deu um abraço em** {}'.format(ctx.author.mention, member.mention)
 
         embed = discord.Embed(title="**Abraço!**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(abraça2))
+                                description="{}".format(abraça2),timestamp=datetime.datetime.utcnow())
 
         embed.set_image(url="{}".format(gif))
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
@@ -255,7 +255,7 @@ class Interação(commands.Cog):
         beija2 = '{} **deu um beijo em** {}'.format(ctx.author.mention, member.mention)
 
         embed = discord.Embed(title="**Beijo!**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(beija2))
+                                description="{}".format(beija2),timestamp=datetime.datetime.utcnow())
 
         embed.set_image(url="{}".format(gif2))
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
@@ -290,7 +290,7 @@ class Interação(commands.Cog):
         tnc1 = '{} mandou {} tomar no cu!'.format(ctx.author.mention, person.mention)
 
         embed = discord.Embed(title="**Raiva!**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(tnc1))
+                                description="{}".format(tnc1),timestamp=datetime.datetime.utcnow())
         embed.set_image(url="{}".format(gif2))
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
 
@@ -310,7 +310,7 @@ class Interação(commands.Cog):
         cave2 = '{} **mandou** {} **de volta pra caverna**'.format(ctx.author, member.mention)
 
         embed = discord.Embed(title="**Volta pra Caverna!**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(cave2))
+                                description="{}".format(cave2),timestamp=datetime.datetime.utcnow())
         embed.set_image(url="{}".format(gif))
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
 
@@ -343,7 +343,7 @@ class Interação(commands.Cog):
         dança2 = '{} **começou a dançar com** {}'.format(ctx.author, member.mention)
 
         embed = discord.Embed(title="**Dançante!**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(dança2))
+                                description="{}".format(dança2),timestamp=datetime.datetime.utcnow())
         embed.set_image(url="{}".format(gif))
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
 
@@ -380,7 +380,7 @@ class Interação(commands.Cog):
         ataca2 = '{} **deu um ataque em** {}'.format(ctx.author, member.mention)
 
         embed = discord.Embed(title="**Ataque!**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(ataca2))
+                                description="{}".format(ataca2),timestamp=datetime.datetime.utcnow())
         embed.set_image(url="{}".format(gif))
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
 
@@ -470,7 +470,7 @@ class Interação(commands.Cog):
         ataca2 = '{} e {} **Deram um High Five!**'.format(ctx.author.mention, member.mention)
 
         embed = discord.Embed(title="**Shipados!**", colour=discord.Colour(0x370c5e),
-                                description="{}".format(ataca2))
+                                description="{}".format(ataca2),timestamp=datetime.datetime.utcnow())
         embed.set_image(url="{}".format(gif))
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
 
