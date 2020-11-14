@@ -264,86 +264,11 @@ class Geral(commands.Cog):
                     s.set_author(name="{} Emojis".format(ctx.guild.name), icon_url=ctx.guild.icon_url)
                 await ctx.send(embed=s)
 
-
+    '''
     @commands.command(description='Adiciona um emoji neste servidor a partir de um link, imagem ou outro emoji já criado.',usage='c.addemoji <URL ou Emoji>')
     @commands.bot_has_permissions(embed_links=True)
     @commands.bot_has_permissions(manage_emojis=True)
-    async def addemoji(self, ctx, emote: str=None):
-        if not emote:
-            if ctx.message.attachments:
-                url = ctx.message.attachments[0].url
-                split1 = url.split("/")
-                split2 = split1[6].split(".")
-                emotename = split2[0].replace("-", "_")
-            else:
-                await ctx.send("Uma imagem, url ou emote é um argumento obrigatório :no_entry:")
-                return
-        elif "https://" in emote or "http://" in emote:
-            url = emote
-            if "https://cdn.discordapp.com/attachments/" in url:
-                split1 = url.split("/")
-                split2 = split1[6].split(".")
-                emotename = split2[0].replace("-", "_")
-            else:
-                await ctx.send("Não consegui encontrar este emote em nenhum dos servidores em que estou, então forneça um nome para ele abaixo. (Responder abaixo)")
-                try:
-                    def check(m):
-                        return m.author == ctx.author and m.channel == ctx.channel
-                    response = await self.bot.wait_for("message", check=check, timeout=30)
-                    emotename = response.content.replace(" ", "_").replace("-", "_")
-                except asyncio.TimeoutError:
-                    await ctx.send("Tempo esgotado :stopwatch:")
-                    return
-        else:
-            try:
-                emote1 = self.bot.get_emoji(int(emote))
-                if not emote1:
-                    request = requests.get("https://cdn.discordapp.com/emojis/" + emote + ".gif")
-                    if request.text == "":
-                        url = "https://cdn.discordapp.com/emojis/" + emote + ".png"
-                    else:
-                        url = "https://cdn.discordapp.com/emojis/" + emote + ".gif"
-                    await ctx.send("Não consegui encontrar este emote em nenhum dos servidores em que estou, então forneça um nome para ele abaixo. (Responder abaixo)")
-                    try:
-                        def check(m):
-                            return m.author == ctx.author and m.channel == ctx.channel
-                        response = await self.bot.wait_for("message", check=check, timeout=30)
-                        emotename = response.content.replace(" ", "_").replace("-", "_")
-                    except asyncio.TimeoutError:
-                        await ctx.send("Tempo esgotado :stopwatch:")
-                        return
-                else:
-                    emotename = emote1.name
-                    url = emote1.url
-            except:
-                try:
-                    if emote.startswith("<a:"):
-                        splitemote = emote.split(":")
-                        emotename = splitemote[1]
-                        emoteid = str(splitemote[2])[:-1]
-                        extend = ".gif"
-                    else:
-                        splitemote = emote.split(":")
-                        emotename = splitemote[1]
-                        emoteid = str(splitemote[2])[:-1]
-                        extend = ".png"
-                except:
-                    await ctx.send("Emoji inválido :no_entry:")
-                    return
-                url = "https://cdn.discordapp.com/emojis/" + emoteid + extend
-        image = requests.get(url).content
-        try:
-            emoji = await ctx.guild.create_custom_emoji(name=emotename, image=image)
-            return
-        except discord.errors.Forbidden:
-            await ctx.send("falta de perms")
-        except discord.errors.HTTPException:
-            await ctx.send("Não consegui criar esse emoji, tente novamente com outro. :no_entry:")
-            return
-        except:
-            await ctx.send("Emoji / url inválido (verifique se foi excluído ou se você cometeu um erro de digitação): no_entry:")
-            return
-        await ctx.send(f"{emoji}| <@{ctx.author.id}> Emoji adicionado com sucesso.")
+    '''
 
     @commands.command(description='Mostra a lista dos maiores invitantes do servidor.',usage='c.topinviters',aliases=["ilb", "inviteslb","topinvite"],hidden=True)
     @commands.bot_has_permissions(embed_links=True)

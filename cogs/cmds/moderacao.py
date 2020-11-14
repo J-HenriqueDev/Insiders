@@ -1,11 +1,7 @@
 import discord
 from datetime import datetime, timedelta
 import pytz, typing
-from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont, ImageOps
 from discord.ext import commands
-from asyncio import sleep
-import requests
 
 
 mutedRole = '</Mutado>' # Put here the name of muted members role
@@ -14,10 +10,7 @@ memberRole = '👤┃Membro' # Put here the name of members default role
 class moderacao(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
-    
-    
-    
-    
+
     @commands.command(no_pm=True,hidden=True)
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def cores(self, ctx):
