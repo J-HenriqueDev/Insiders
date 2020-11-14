@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from utils import botstatus
-from urllib.request import Request, urlopen
+from utils.Utils import datetime_format
 import urllib
 import sys
 from datetime import datetime, timedelta
@@ -66,7 +66,7 @@ class informacao(commands.Cog):
       embed.add_field(name=f"{self.bot._emojis['timer']} Tempo de atividade", value = '``'+str(botstatus.timetotal()).replace("{day}","dia").replace("{hour}","hora").replace("{minute}","minuto").replace("{second}","segundo")+'``')
       embed.add_field(name=f"{self.bot._emojis['guilds']} Servidores", value = '``'+str(len(self.bot.guilds))+' (shards '+"1"+')``')
       embed.add_field(name=f"{self.bot._emojis['ping']} Lâtencia", value = '``{0:.2f}ms``'.format(self.bot.latency * 1000))
-      embed.add_field(name=f"{self.bot._emojis['cpu']} Porcentágem da CPU",value=f'``{botstatus.cpu_usage()}%``')
+      #embed.add_field(name=f"{self.bot._emojis['cpu']} Porcentágem da CPU",value=f'``{botstatus.cpu_usage()}%``')
       #embed.add_field(name=f"<:ping:564890304839417887> Processador", value=f'``{botstatus.host_name()}``')
       embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
       await ctx.send(embed=embed)
@@ -93,7 +93,7 @@ class informacao(commands.Cog):
         geral = len([y.id for y in servidor.members])
         bots= len([y.id for y in servidor.members if y.bot])
         criado_em = str(servidor.created_at.strftime("%H:%M:%S - %d/%m/20%y"))
-        dias = (datetime.utcnow() - servidor.created_at).days
+        dias = datetime_format(servidor.created_at)
         usuarios = " <:nsonline:761304111152758846> : ``"+str(online)+"``<:nsocupado:761304111017754635> : ``"+str(afk)+"``  <:nsdnd:761304111336783872> : ``"+str(dnd)+"`` <:nsoffline:761304111361556520> : ``"+str(offline)+f"`` {self.bot._emojis['bots']} : ``"+str(bots)+"``"
         texto = f"{self.bot._emojis['texto']} : ``"+str(len(servidor.text_channels))+f"``{self.bot._emojis['voz']}  : ``"+str(len(servidor.voice_channels))+"``"
         cargos = len([y.id for y in servidor.roles])
@@ -103,7 +103,7 @@ class informacao(commands.Cog):
         embed.add_field(name=f"{self.bot._emojis['dono']} Dono", value = "``"+str(servidor.owner)+"``")
         embed.add_field(name=f"{self.bot._emojis['nome']} Nome", value = "``"+str(servidor.name)+"``")
         embed.add_field(name=f"{self.bot._emojis['ip']} Id", value = "``"+str(servidor.id)+"``")
-        embed.add_field(name=f"{self.bot._emojis['notas']} Criação", value =f"``{criado_em}`` ({dias} dias)")
+        embed.add_field(name=f"{self.bot._emojis['notas']} Criação", value =f"``{criado_em}`` ({dias})")
         embed.add_field(name=f"{self.bot._emojis['roles']} Cargos", value = "``"+str(cargos)+"``")
         embed.add_field(name=f"{self.bot._emojis['emoji']} Emojis", value = "``"+str(emojis)+"``")
         embed.add_field(name=f"{self.bot._emojis['canais']} Canais", value = texto)
@@ -191,7 +191,7 @@ class informacao(commands.Cog):
       svs = ', '.join([c.name for c in self.bot.guilds if usuario in c.members])
       entrou_servidor = str(usuario.joined_at.strftime("%d/%m/20%y ás %H:%M:%S"))
       conta_criada = str(usuario.created_at.strftime("%d/%m/20%y"))
-      conta_dias = (datetime.utcnow() - usuario.created_at).days
+      conta_dias = datetime_format(usuario.created_at)
       cargos = len([r.name for r in usuario.roles if r.name != "@everyone"])
       if not svs: 
         svs = 'Nenhum servidor em comum.'
@@ -263,7 +263,7 @@ class informacao(commands.Cog):
         embed.set_author(name=f"Informações do canal", icon_url=ctx.author.avatar_url_as())
         embed.add_field(name=f"{self.bot._emojis['nome']} Nome", value = "``"+str(channel.name)+"``",inline=False)
         embed.add_field(name=f"{self.bot._emojis['ip']} ID", value = "``"+str(channel.id)+"``",inline=False)
-        embed.add_field(name=f"{self.bot._emojis['notas']} Criação", value = "``"+str(channel_created)+"``",inline=False)
+        embed.add_field(name=f"{self.bot._emojis['notas']} Criação", value =f"``{channel_created}``({datetime_format(channel.created_at)})",inline=False)
         embed.add_field(name=f"{self.bot._emojis['canais']} Posição", value = "``"+str(channel.position)+"``",inline=False)
         embed.add_field(name=f"{self.bot._emojis['tipo']} Tipo do canal", value = "``"+str(channel_type)+"``",inline=False)
         try:
