@@ -4,7 +4,7 @@ import asyncio
 import aiohttp
 import requests
 import time
-import datetime
+from datetime import datetime
 from io import BytesIO
 from discord.ext import commands
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageFilter
@@ -23,15 +23,14 @@ class Geral(commands.Cog):
         embed = discord.Embed(title="🏓 Pong!",
                               description=f' No Momento estou com: **{round(self.bot.latency * 1000)}ms**.',
                               color=0x36393f,
-                              timestamp=datetime.datetime.utcnow())
+                              timestamp=datetime.utcnow())
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
         await ctx.message.delete()
         await ctx.send(embed=embed, delete_after=90)
 
     @commands.bot_has_permissions(attach_files=True)
     @commands.guild_only()
-    @commands.command(description='Mostra as informações da música no spotify que você está ouvindo.',
-                      usage='c.spotify @TOBIAS', aliases=['sptfy', 'musica'])
+    @commands.command(description='Mostra as informações da música no spotify que você está ouvindo.',usage='c.spotify @TOBIAS', aliases=['sptfy', 'musica'])
     async def spotify(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
@@ -45,68 +44,70 @@ class Geral(commands.Cog):
         presence = presence[0]
 
         ########################################################
-
+        print("Link :",presence.album_cover_url)
         async with aiohttp.ClientSession() as session:
             async with session.get(str(presence.album_cover_url)) as resp:
-                if resp.status == 199:
+                print("resp : ", resp.status)
+                if resp.status == 200:
                     response = BytesIO(await resp.read())
                 else:
                     return
 
             thumbnail = Image.open(response).resize((414, 415), Image.ANTIALIAS)
-            base = Image.new('RGBA', (1099, 415), (0, 0, 0, 0))
-            base.paste(thumbnail, (-1, 0))
-            borrado = Image.open(response).resize((714, 615), Image.ANTIALIAS).filter(
-                ImageFilter.GaussianBlur(radius=8))
-            if borrado.mode != 'RGBA':
-                borrado = borrado.convert('RGBA')
+            base = Image.new('RGBA', (1100, 415), (0, 0, 0, 0))
+            base.paste(thumbnail, (0, 0))
+            borrado = Image.open(response).resize((715, 615), Image.ANTIALIAS).filter(ImageFilter.GaussianBlur(radius=8))
 
-            width, height = borrado.size
-            gradient = Image.new('L', (0, height), color=0xFF)
+            if borrado.mode != 'RGBA':
+                degrade = borrado.convert('RGBA')
+
+            width, height = degrade.size
+            gradient = Image.new('L', (1, height), color=0xFF)
 
             for y in range(height):
-                gradient.putpixel((-1, y), int(255 * (1 - 1.5 * float(y) / width)))
+                gradient.putpixel((0, y), int(255 * (1 - 1.5 * float(y) / width)))
 
-            gradient = gradient.rotate(179)
-            alpha = gradient.resize(borrado.size)
+            gradient = gradient.rotate(180)
+            alpha = gradient.resize(degrade.size)
 
-            black_im = Image.new('RGBA', (width, height), color=-1)
+            black_im = Image.new('RGBA', (width, height), color=0)
             black_im.putalpha(alpha)
 
-            gradient_im = Image.alpha_composite(borrado, black_im)
-            base.paste(gradient_im, (414, -150))
+            gradient_im = Image.alpha_composite(degrade, black_im)
+            base.paste(gradient_im, (415, -150))
 
             ########################################################
-            logo = Image.open('cogs/img/spotlogo.png').resize((99, 100), Image.ANTIALIAS)
-            base.paste(logo, (419, 10), logo.convert('RGBA'))
+            logo = Image.open('cogs/img/spotlogo.png').resize((100, 100), Image.ANTIALIAS)
+            base.paste(logo, (420, 10), logo.convert('RGBA'))
             ########################################################
             end = datetime.utcnow() - presence.start
             decorrido = end.seconds
             ########################################################
             total = int(presence.duration.seconds)
 
-            x = (699 * decorrido) / total
+            x = (700 * decorrido) / total
             ########################################################
 
             end = presence.end - datetime.utcnow()
-            end = str(presence.duration - end)[1:7]
-            dur = str(presence.duration)[1:7]
+            end = str(presence.duration - end)[2:7]
+            dur = str(presence.duration)[2:7]
 
             ########################################################
 
-            fonte = ImageFont.truetype('cogs/img/American Captain.ttf', 34)
+            fonte = ImageFont.truetype('cogs/img/American Captain.ttf', 35)
             escrever = ImageDraw.Draw(base)
-            escrever.text(xy=(429, 250), text=str(presence.title.capitalize()), fill=(240, 248, 255), font=fonte)
-            escrever.rectangle([(414, 400), (1100, 415)], fill=(40, 40, 40))
-            escrever.rectangle([(414, 400), (x + 400, 415)], fill=(0, 255, 0))
-            escrever.text(xy=(429, 300), text=str(presence.artist), fill=(46, 189, 89), font=fonte)
+            escrever.text(xy=(430, 250), text=str(presence.title.capitalize()), fill=(240, 248, 255), font=fonte)
+            escrever.rectangle([(415, 400), (1100, 415)], fill=(40, 40, 40))
+            escrever.rectangle([(415, 400), (x + 400, 415)], fill=(0, 255, 0))
+            escrever.text(xy=(430, 300), text=str(presence.artist), fill=(46, 189, 89), font=fonte)
             ########################################################
-            escrever.text(xy=(429, 360), text=str(end), fill=(0, 255, 0), font=fonte)
-            escrever.text(xy=(1019, 360), text=str(dur), fill=(240, 248, 255), font=fonte)
+            escrever.text(xy=(430, 360), text=str(end), fill=(0, 255, 0), font=fonte)
+            escrever.text(xy=(1020, 360), text=str(dur), fill=(240, 248, 255), font=fonte)
             ########################################################
+            base.save('cogs/img/baseado.png')
             arr = BytesIO()
             base.save(arr, format='PNG')
-            arr.seek(-1)
+            arr.seek(0)
             file = discord.File(arr, filename='imagem0.png')
             await ctx.send(file=file)
 
@@ -132,7 +133,7 @@ class Geral(commands.Cog):
             else:
                 aliases = "Nenhuma abreviação."
 
-            embed = discord.Embed(colour=self.bot.cor,timestamp=datetime.datetime.utcnow())
+            embed = discord.Embed(colour=self.bot.cor,timestamp=datetime.utcnow())
             embed.set_author(name=f"Informações do comando {nome}.")
             embed.set_thumbnail(url=self.bot.user.avatar_url)
             embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
@@ -142,7 +143,7 @@ class Geral(commands.Cog):
             return await ctx.send(embed=embed)
     
 
-        em = discord.Embed(colour=self.bot.cor, description="\n**[Prefixos]:** `c.comando`, `C.comando`\n",timestamp=datetime.datetime.utcnow())
+        em = discord.Embed(colour=self.bot.cor, description="\n**[Prefixos]:** `c.comando`, `C.comando`\n",timestamp=datetime.utcnow())
         em.set_author(name=f"{self.bot.user.name} | Comandos")
         em.set_thumbnail(url=self.bot.user.avatar_url)
         
@@ -256,7 +257,7 @@ class Geral(commands.Cog):
             for x in range(math.ceil(len(msg)/2000)):
                 while msg[n-1:n] != " ":
                     n -= 1
-                s=discord.Embed(description=msg[i:n],timestamp=datetime.datetime.utcnow())
+                s=discord.Embed(description=msg[i:n],timestamp=datetime.utcnow())
                 s.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
                 i += n
                 n += n
@@ -335,18 +336,18 @@ class Geral(commands.Cog):
         if numero>100:
             numb = 100
             await ctx.channel.purge(limit=numb)
-            embed=discord.Embed(description=f"{correto} **|** Foram apagadas **{numb}** mensagens.", color=self.bot.cor,timestamp=datetime.datetime.utcnow())
+            embed=discord.Embed(description=f"{correto} **|** Foram apagadas **{numb}** mensagens.", color=self.bot.cor,timestamp=datetime.utcnow())
             msg = await ctx.send(embed=embed)
             await asyncio.sleep(10)
             await msg.delete()
         elif numero>0:
             await ctx.channel.purge(limit=numero)
-            embed=discord.Embed(description=f"{correto} **|** Foram apagadas **{numero}** mensagens.", color=self.bot.cor,timestamp=datetime.datetime.utcnow())
+            embed=discord.Embed(description=f"{correto} **|** Foram apagadas **{numero}** mensagens.", color=self.bot.cor,timestamp=datetime.utcnow())
             msg = await ctx.send(embed=embed)
             await asyncio.sleep(10)
             await msg.delete()
         else:
-            embed=discord.Embed(description=f"{incorreto} **|** Insirá um valor válido entre (1 a 100).", color=self.bot.cor,timestamp=datetime.datetime.utcnow())
+            embed=discord.Embed(description=f"{incorreto} **|** Insirá um valor válido entre (1 a 100).", color=self.bot.cor,timestamp=datetime.utcnow())
             msg = await ctx.send(embed=embed)
             await asyncio.sleep(10)
             await msg.delete()
