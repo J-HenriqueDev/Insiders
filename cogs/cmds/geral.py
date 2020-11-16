@@ -35,8 +35,7 @@ class Geral(commands.Cog):
         if member is None:
             member = ctx.author
 
-        presence = list(filter(lambda activity: activity.type.name == 'listening', member.activities)) if len(
-            member.activities) > 0 else None
+        presence = discord.utils.find(lambda ac: isinstance(ac.type, discord.Spotify), member.activities)
         if presence is None:
             embed = self.bot.erEmbed(ctx, 'Sem Músicas.')
             embed.description = f'**{ctx.author.name}** você não está ouvindo nenhuma música no momento.'
@@ -53,7 +52,7 @@ class Geral(commands.Cog):
                 else:
                     return
 
-            thumbnail = Image.open(response).resize((414, 415), Image.ANTIALIAS)
+            thumbnail = Image.open(response).resize((415, 415), Image.ANTIALIAS)
             base = Image.new('RGBA', (1100, 415), (0, 0, 0, 0))
             base.paste(thumbnail, (0, 0))
             borrado = Image.open(response).resize((715, 615), Image.ANTIALIAS).filter(ImageFilter.GaussianBlur(radius=8))

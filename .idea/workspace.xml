@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4426e92a-d58b-4922-aa88-8c6ea0a7bccc" name="Default Changelist" comment="" />
+    <list default="true" id="ccb85e30-d649-42ef-ac29-0505e3937fb1" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,17 +10,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="JupyterTrust" id="2b675976-0496-4dc2-a0f6-360c07fdde24" />
-  <component name="ProjectId" id="1kF5x4csB96uoyckvmwjmYkguDY" />
+  <component name="ProjectId" id="1kN8HwPHT3kd3hneYPokBAnvoe3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -35,7 +32,6 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -54,45 +50,34 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="4426e92a-d58b-4922-aa88-8c6ea0a7bccc" name="Default Changelist" comment="" />
-      <created>1605283741800</created>
+      <changelist id="ccb85e30-d649-42ef-ac29-0505e3937fb1" name="Default Changelist" comment="" />
+      <created>1605529618506</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1605283741800</updated>
-      <workItem from="1605283744431" duration="817000" />
-      <workItem from="1605284574042" duration="1543000" />
-      <workItem from="1605286148414" duration="438000" />
-      <workItem from="1605286603232" duration="744000" />
+      <updated>1605529618506</updated>
     </task>
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
   <component name="WindowStateProjectService">
-    <state x="859" y="385" key="#Vim_Emulation" timestamp="1605284162604">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605538181044">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="859" y="385" key="#Vim_Emulation/0.0.1920.1040@0.0.1920.1040" timestamp="1605284162604" />
-    <state width="1362" height="266" key="GridCell.Tab.0.bottom" timestamp="1605354667610">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605538181044" />
+    <state width="1362" height="266" key="GridCell.Tab.0.bottom" timestamp="1605538231138">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="266" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605354667610" />
-    <state width="1362" height="266" key="GridCell.Tab.0.center" timestamp="1605354667610">
+    <state width="1362" height="266" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605538231138" />
+    <state width="1362" height="266" key="GridCell.Tab.0.center" timestamp="1605538231138">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="266" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605354667610" />
-    <state width="1362" height="266" key="GridCell.Tab.0.left" timestamp="1605354667610">
+    <state width="1362" height="266" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605538231138" />
+    <state width="1362" height="266" key="GridCell.Tab.0.left" timestamp="1605538231137">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="266" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605354667610" />
-    <state width="1362" height="266" key="GridCell.Tab.0.right" timestamp="1605354667610">
+    <state width="1362" height="266" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605538231137" />
+    <state width="1362" height="266" key="GridCell.Tab.0.right" timestamp="1605538231138">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="266" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605354667610" />
-    <state x="461" y="164" key="SettingsEditor" timestamp="1605290605923">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1605290605923" />
+    <state width="1362" height="266" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605538231138" />
   </component>
 </project>

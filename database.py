@@ -31,7 +31,7 @@ def adicionar_user(db: database, member):
         "histórico_nomes": [
             {
                 "nome": str(member),
-                "data": datetime.now()
+                "data": datetime.utcnow()
             }
         ],
         "histórico_reps": [],
