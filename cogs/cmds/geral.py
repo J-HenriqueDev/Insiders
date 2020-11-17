@@ -35,18 +35,18 @@ class Geral(commands.Cog):
         if member is None:
             member = ctx.author
 
-        presence = discord.utils.find(lambda ac: isinstance(ac.type, discord.Spotify), member.activities)
+        presence = discord.utils.find(lambda x: isinstance(x, discord.activity.Spotify), member.activities)
+        #print(presence)
         if presence is None:
             embed = self.bot.erEmbed(ctx, 'Sem Músicas.')
             embed.description = f'**{ctx.author.name}** você não está ouvindo nenhuma música no momento.'
             return await ctx.send(embed=embed)
-        presence = presence[0]
 
         ########################################################
-        print("Link :",presence.album_cover_url)
+        #print("Link :",presence.album_cover_url)
         async with aiohttp.ClientSession() as session:
             async with session.get(str(presence.album_cover_url)) as resp:
-                print("resp : ", resp.status)
+                #print("resp : ", resp.status)
                 if resp.status == 200:
                     response = BytesIO(await resp.read())
                 else:
