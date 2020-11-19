@@ -9,7 +9,7 @@ def adicionar_user(db: database, member):
         "discriminador": member.discriminator,
         "avatar": member.avatar,
         "administrador": False,
-        "supervisor": False,
+        "moderador": False,
         "helper": False,
         "mutado": False,
         "reps": 0,

@@ -652,7 +652,7 @@ class Desenvolvimento(commands.Cog):
                            embed.add_field(name=f"{self.bot._emojis['api']} Linguagem (Secundária)", value = "``"+str(lang2.content)+"``", inline=True)
                            embed.add_field(name=f":bell: Motivo", value = "``"+str(motivo.content)+"``", inline=True)
                            msg = await ctx.author.send(embed=embed)
-                           reactions = [":errado:761205727841746954", ':correto:761205727670829058>']
+                           reactions = [":errado:761205727841746954", ':correto:761205727670829058']
                            user = ctx.message.author
                            if user == ctx.message.author:
                               for reaction in reactions:

@@ -22,12 +22,6 @@ class bemvindo(commands.Cog):
 
     @commands.Cog.listener()  
     async def on_member_join(self, member):
-        if member.bot:
-            dev = member.guild.get_role(772972514418753586)
-            await member.add_roles(dev)
-        else:
-            captchac = member.guild.get_role(772972512711409725)
-            await member.add_roles(captchac)
         if member.guild.id == self.bot.guild and not member.bot:
             canal = self.bot.get_channel(772972557015711744)
             membros = len(member.guild.members)

@@ -25,7 +25,6 @@ class Geral(commands.Cog):
                               color=0x36393f,
                               timestamp=datetime.utcnow())
         embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
-        await ctx.message.delete()
         await ctx.send(embed=embed, delete_after=90)
 
     @commands.bot_has_permissions(attach_files=True)
@@ -103,7 +102,7 @@ class Geral(commands.Cog):
             escrever.text(xy=(430, 360), text=str(end), fill=(0, 255, 0), font=fonte)
             escrever.text(xy=(1020, 360), text=str(dur), fill=(240, 248, 255), font=fonte)
             ########################################################
-            base.save('cogs/img/baseado.png')
+            #base.save('cogs/img/baseado.png')
             arr = BytesIO()
             base.save(arr, format='PNG')
             arr.seek(0)
