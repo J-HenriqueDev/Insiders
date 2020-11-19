@@ -127,7 +127,7 @@ if __name__ == '__main__':
                 bot.load_extension(f'cogs.events.{filename[:-3]}') 
                 #print(f'EVENTO [{filename}] CARREGADO')
             except commands.NoEntryPointError:
-                pass  # se não achar o def setup
+                pass  
             except:
                 print(f'⚠ - Módulo {filename[:-3]} não foi carregado!')
     try:
