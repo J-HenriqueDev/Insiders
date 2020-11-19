@@ -24,6 +24,7 @@ class Cadastro(commands.Cog):
             ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
             await ctx.message.add_reaction(self.bot._emojis['incorreto'].replace("<", " ").replace(">", " "))
             return
+        '''
         dias_servidor = (datetime.utcnow() - ctx.author.joined_at).days
         if dias_servidor < 5:
             embed = discord.Embed(colour=self.bot.cor)
@@ -31,7 +32,7 @@ class Cadastro(commands.Cog):
                 description=f"{self.bot._emojis['incorreto']} **|** Olá **{ctx.author.name}**, você precisa ser membro desse servidor há mais de **`5`** dias para poder adicionar um bot.",
                 color=self.bot.cor)
             return await ctx.send(embed=embed)
-        
+        '''
 
         if ctx.author.id in self.forms:
             return await ctx.send(f"{self.bot._emojis['errado']} | **{ctx.author.name}**, ainda existe um formulário sendo executado no seu privado.", delete_after=30)
