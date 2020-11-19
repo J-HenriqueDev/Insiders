@@ -83,32 +83,28 @@ class Atualizar(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        bot = self.bots.find_one({"_id": member.id})
-        if bot is None:
-            return
-
-        if not member.bot:
-            return
-
-        if bot['pendente_discord']:
-            cargo_bot_pendente = member.guild.get_role(778736824503238676)
-            await member.add_roles(cargo_bot_pendente, reason=f'[{self.bot.user}] Bot Pendente para aprovação')
-
         if member.bot:
-            return
+            bot = self.bots.find_one({"_id": member.id})
+            if bot is None:
+                return await member.add_roles(discord.Object(772972514418753586))
+
+            if bot['pendente_discord']:
+                cargo_bot_pendente = member.guild.get_role(778736824503238676)
+                await member.add_roles(cargo_bot_pendente, reason=f'[{self.bot.user}] Bot Pendente para aprovação')
+
+            cat = member.created_at.replace(tzinfo=pytz.utc).astimezone(tz=pytz.timezone('America/Sao_Paulo')).strftime(
+                '`%d/%m/%Y`')
+            dias = (datetime.utcnow() - member.created_at).days
+            embed = discord.Embed(color=self.bot.cor,
+                                  description=f'**{member.mention}(`{member.id}`) entrou no servidor, {cat}({dias} dias).**')
+            embed.set_thumbnail(url=member.avatar_url)
+            embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
+            await self.bot.get_channel(773567922526355496).send(embed=embed)
+
         else:
             user = self.users.find_one({"_id": member.id})
             if user is None:
                 return self.bot.adicionar_user(self.users, member)
-
-        cat = member.created_at.replace(tzinfo=pytz.utc).astimezone(tz=pytz.timezone('America/Sao_Paulo')).strftime(
-            '`%d/%m/%Y`')
-        dias = (datetime.utcnow() - member.created_at).days
-        embed = discord.Embed(color=self.bot.cor,
-                              description=f'**{member.mention}(`{member.id}`) entrou no servidor, com a conta criada em {cat}({dias} dias).**')
-        embed.set_thumbnail(url=member.avatar_url)
-        embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
-        await self.bot.get_channel(773567922526355496).send(embed=embed)
 
 
 
@@ -127,8 +123,6 @@ class Atualizar(commands.Cog):
                 return
 
             bot['pendente_discord'] = False
-            bot['pendente_site'] = False
-            bot['aprovado_site'] = False
             bot['aprovado_discord'] = False
             bot['suspenso'] = True
             bot['suspenso_info'] = {

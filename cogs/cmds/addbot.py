@@ -69,8 +69,7 @@ class Cadastro(commands.Cog):
 
 
         max_tentativas = 3
-        # < ----------------------------------------------- >
-        #m_id = await ctx.author.send(f"{self.bot._emojis['api']} | **Qual o `ID` do bot que você deseja adicionar**? `(2 minutos)`")
+
 
         def id_check_canal(m):
             return m.author == ctx.author and m.channel.id == m_opt.channel.id
@@ -98,10 +97,6 @@ class Cadastro(commands.Cog):
 
         if not botID:
             self.forms.remove(ctx.author.id)
-            return
-        # < ----------------------------------------------- >
-
-        # < ----------------------------------------------- >
         try:
             bot = await self.bot.fetch_user(botID)
         except (discord.Forbidden, discord.HTTPException):
@@ -130,9 +125,6 @@ class Cadastro(commands.Cog):
             elif _bot['aprovado_discord']:
                 self.forms.remove(ctx.author.id)
                 return await ctx.author.send(f"{self.bot._emojis['errado']} | **{ctx.author.name}**, o `ID` fornecido pertence ao bot **`{bot}`** que já foi **ADICIONADO** no Discord do **`Insider's`**.", delete_after=20)
-        # < ----------------------------------------------- >
-
-        # < ----------------------------------------------- >
         
         txs = f"{self.bot._emojis['nome']} **|** Diga-nos agora o prefixo do seu **BOT** (máximo 8 caracteres)\n\n:no_entry_sign: Prefixo banidos **|** **[c.],[!],[/][@],[#]**\n\n{self.bot._emojis['timer']} **|** **2 minutos**"
         embed_prefix = discord.Embed(description=txs, color=self.bot.cor)
@@ -165,9 +157,7 @@ class Cadastro(commands.Cog):
         if not botPrefixo:
             self.forms.remove(ctx.author.id)
             return
-        # < ----------------------------------------------- >
 
-        # < ----------------------------------------------- >
         botDescricao = None
         m_descricao = await ctx.author.send(f"{self.bot._emojis['api']} | **Digite uma curta descrição sobre seu bot**. Ela ficará visível no comando de informações do seu bot. `(5 minutos)`\n**OBS**: O texto precisa conter no mínimo ``100`` caracteres e no máximo ``180``.")
 
@@ -197,12 +187,10 @@ class Cadastro(commands.Cog):
         if not botDescricao:
             self.forms.remove(ctx.author.id)
             return
-        # < ----------------------------------------------- >
 
-        # < ----------------------------------------------- >
         bibliotecas = ["Python", "JavaScript"]
         
-        #m_biblioteca = await ctx.author.send(f"{self.bot._emojis['api']} | **Qual biblioteca foi usada para desenvolver seu bot**? `(2 minutos)`\n**OBS**: Certifique-se de colocar uma das bibliotecas que estão na seguinte lista:\n{', '.join([f'`{lib}`' for lib in bibliotecas])}")
+
         
         txs = f"{self.bot._emojis['canais']} **|** Diga-nos agora o linguagem do seu **BOT** foi criado.\n{self.bot._emojis['api']} Linguagens **|** **{', '.join([f'`{lib}`' for lib in bibliotecas])}**\n{self.bot._emojis['timer']} **|** **2 minutos**"
         embed = discord.Embed(description=txs, color=self.bot.cor)
@@ -236,11 +224,7 @@ class Cadastro(commands.Cog):
         if not botBiblioteca:
             self.forms.remove(ctx.author.id)
             return
-        # < ----------------------------------------------- >
 
-
-        # < ----------------------------------------------- >
-      
 
         embed = discord.Embed(color=self.bot.cor)
         embed.set_author(name="SOLICITAÇÂO DE ADD(BOT)",
@@ -273,15 +257,13 @@ class Cadastro(commands.Cog):
 
         for e in [self.bot._emojis['correto'], self.bot._emojis['errado']]:
             await pendenteMsg.add_reaction(e.replace("<", "").replace(">", ""))
-        # < ----------------------------------------------- >
 
-        # < ----------------------------------------------- >
         if _bot:
                 _bot['pendente_discord'] = True
                 _bot['data_enviado_discord'] = datetime.now()
                 _bot['enviado_por_discord'] = ctx.author.id
                 _bot['pendente_msg'] = pendenteMsg.id
-                _bot['biblioteca'] = botBiblioteca
+                _bot['biblioteca'] = botBiblioteca.lower()
                 _bot['prefixo'] = botPrefixo
                 db.save(_bot)
         else:
@@ -333,9 +315,8 @@ class Cadastro(commands.Cog):
             color=self.bot.cor)
         
         await ctx.author.send(embed=embed_concluido)
-        #await ctx.author.send(f"{self.bot._emojis['correto']} | **{ctx.author.name}**, você completou o formulário para adicionar seu bot `{bot}` no **INSIDER'S**.\n**OBS**: O bot será sujeito a avaliação, podendo ser aprovado ou rejeitado.")
         self.forms.remove(ctx.author.id)
-        # < ----------------------------------------------- >
+
 
 def setup(lab):
     lab.add_cog(Cadastro(lab))

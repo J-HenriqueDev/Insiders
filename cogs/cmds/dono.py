@@ -25,10 +25,7 @@ class Owner(commands.Cog):
         if not ctx.author.id in self.bot.dono:
             await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
             return
-        mongo = MongoClient(self.bot.database)
-        bard = mongo['bard']
-        users = bard['users']
-        bard.users.update_many({}, {"$set": {"reputação": 0}})
+        self.bot.db.users.update_many({}, {"$set": {"reputação": 0}})
         await ctx.send(f"{self.bot._emojis['correto']}> | **{ctx.author.name}**, a reputação dos NewHelpers foram resetadas.")
 
     @commands.command(aliases=["set","setar","setarreps","setareps"],description="Seta a Quantidade de reps de um usuário.",use="c.setreps @user [número de reps]")
@@ -40,12 +37,10 @@ class Owner(commands.Cog):
             return await ctx.send(f":facepalm: | **{ctx.author.name}** você não especificou um usuário.")
         if quantidade is None:
             return await ctx.send(f"{self.bot._emojis['incorreto']} |**{ctx.author.name}** você não especificou a quantidade de reps que deseja setar para {user.name}.")
-        mongo = MongoClient(self.bot.database)
-        bard = mongo['bard']
-        users = bard['users']
-        users = bard.users.find_one({"_id": str(ctx.author.id)})
+
+        users = self.bot.db.users.find_one({"_id": str(ctx.author.id)})
         if users is None:
-            bard.users.update({"_id": str(user.id)}, {"$set": {"reputação": quantidade}})
+            self.bot.db.users.update({"_id": str(user.id)}, {"$set": {"reputação": quantidade}})
             await ctx.send(f'{self.bot._emojis["correto"]}**{ctx.author.name}** você definiu a quantidade de reps do usuário `{user.name}` para `{quantidade}`.')
         else:
             await ctx.send(f':facepalm: | **{ctx.author.name}** o usuário `{user.name}` não está registrado na database.')

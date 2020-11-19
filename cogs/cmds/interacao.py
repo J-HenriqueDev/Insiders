@@ -112,23 +112,6 @@ class Interação(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    '''
-    @commands.guild_only()
-    @commands.command(name='endeline',hidden=True)
-    async def endeline(self, ctx):
-        if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
-          await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
-          return
-        gif = random.choice(end)
-        endmessage = '**Sem mais vai e vem!**'
-        embed = discord.Embed(title="**FIM DE JOGO!**", colour=discord.Colour(0x370c5e),
-                              description="{}".format(endmessage))
-
-        embed.set_image(url="{}".format(gif))
-        embed.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
-
-        await ctx.send(embed=embed, delete_after=10)
-    '''
 
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.guild_only()

@@ -4,8 +4,8 @@ import pytz, typing
 from discord.ext import commands
 
 
-mutedRole = '</Mutado>' # Put here the name of muted members role
-memberRole = '👤┃Membro' # Put here the name of members default role
+mutedRole = '</Mutado>'
+memberRole = '👤┃Membro'
 
 class moderacao(commands.Cog):
     def __init__(self,bot):
@@ -103,7 +103,7 @@ class moderacao(commands.Cog):
             for kwargs in color_roles:
                 await ctx.guild.create_role(**kwargs, reason="hehe")
 
-    @commands.command(usage='{}ban [membro] (motivo)', description='Bane um membro que está no servidor (ou não). [Banir Membros]', aliases=['banir'])
+    @commands.command(usage='c.ban [membro] (motivo)', description='Bane um membro que está no servidor (ou não). [Banir Membros]', aliases=['banir'])
     @commands.has_permissions(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def ban(self, ctx, membro:typing.Union[discord.Member, str], *, reason="Não informado."):
@@ -122,11 +122,11 @@ class moderacao(commands.Cog):
             if membro.top_role.position >= ctx.me.top_role.position:
                 erro.description = f'Eu não tenho permissão para banir **{membro.name}** (cargo dele é maior ou igual que o meu)'
 
-            if type(erro.description) != discord.Embed.Empty: # isinstance não funcionaria
+            if type(erro.description) != discord.Embed.Empty:
                 return await ctx.send(embed=erro)
             await membro.ban(reason=f'Por {ctx.author} || Motivo: {reason}')
 
-            # Não vou usar o self.bot.embed, já que esse embed sobescreve tudo.
+
             embed = self.bot.embed(ctx)
             embed.title = f'{self.bot._emojis["ban"]} | Ban'
             embed.description = 'Desrespeitou as regras, deu nisso aí.'
@@ -189,7 +189,7 @@ class moderacao(commands.Cog):
         if membro.top_role.position >= ctx.me.top_role.position:
             erro.description=f'Eu não tenho permissão para banir **{membro.name}** (cargo dele é maior ou igual que o meu)'
 
-        if type(erro.description) != discord.Embed.Empty: # isinstance não funciona aqui
+        if type(erro.description) != discord.Embed.Empty:
             return await ctx.send(embed=erro)
 
         await membro.ban(reason=f'Por {ctx.author} || Motivo: {reason}')
@@ -228,8 +228,8 @@ class moderacao(commands.Cog):
     @commands.command()
     @commands.bot_has_permissions(kick_members = True)
     @commands.has_permissions(kick_members = True)
-    async def mute(self, ctx, member: discord.Member = None, *, reason: str = 'Motivo não informado.'): # Mute command
-        # Discord return
+    async def mute(self, ctx, member: discord.Member = None, *, reason: str = 'Motivo não informado.'):
+
         if member is None:
             e = discord.Embed(description = f'Você não informou o usuário a ser mutado, {ctx.author.mention}!', colour = self.bot.cor, timestamp = datetime.utcnow())
             e.set_footer(icon_url = ctx.author.avatar_url, text = ctx.author.name)
@@ -259,9 +259,6 @@ class moderacao(commands.Cog):
                 await ctx.send(embed = e)
                 await ctx.message.delete()
 
-                # Console return
-                print('\n', f'-'*30)
-                print(f'\n[+] A mute command has been called!\n\nLog: Author: {ctx.author}, Target: {member}')
 
     @commands.command()
     @commands.bot_has_permissions(kick_members = True)
@@ -294,9 +291,6 @@ class moderacao(commands.Cog):
                 await ctx.send(embed = e)
                 await ctx.message.delete()
 
-                # Console return
-                print('\n', f'-'*30)
-                print(f'\n[+] A mute command has been called!\n\nLog: Author: {ctx.author}, Target: {member}')
 
 
    

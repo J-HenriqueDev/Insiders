@@ -85,7 +85,6 @@ class events(commands.Cog):
                     await botmember.kick(reason=f"[{self.bot.user}] Bot auto-rejeitado || Motivo: Dono saiu do servidor")
 
                 return await logs.send(f"{self.bot._emojis['errado']} O **bot `{bot['nome']}#{bot['discriminador']}`** de <@{bot['donos'][0]}> **foi recusado por** {servidor.me.mention}.\n```Motivo: Dono saiu do servidor.```")
-
             if botmember is None:
                 await mensagem.remove_reaction(emoji, user)
                 return await canal.send(f"{self.bot._emojis['errado']} | {user.mention}, **você não adicionou o bot `{bot['nome']}#{bot['discriminador']}` no servidor**.", delete_after=20)

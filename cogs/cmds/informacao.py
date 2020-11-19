@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
-from utils import botstatus
-from utils.Utils import datetime_format
+from cogs.utils import botstatus
+from cogs.utils.Utils import datetime_format
 import urllib
 import sys
 from datetime import datetime, timedelta
