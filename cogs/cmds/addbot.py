@@ -41,15 +41,7 @@ class Cadastro(commands.Cog):
                 ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
             await ctx.message.add_reaction(self.bot._emojis['incorreto'].replace("<", " ").replace(">", " "))
             return
-        dias_servidor = (datetime.utcnow() - ctx.author.joined_at).days
-        if dias_servidor < 5:
-            embed = discord.Embed(colour=self.bot.cor)
-            embed = discord.Embed(
-                description=f"{self.bot._emojis['incorreto']} **|** Olá **{ctx.author.name}**, você precisa ser membro desse servidor há mais de **`5`** dias para poder adicionar um bot.",
-                color=self.bot.cor)
-            return await ctx.send(embed=embed)
         
-
         txs = f"{self.bot._emojis['api']} **|** Então você quer adicionar o seu **BOT** em nosso servidor?\nPara isso precisamos que você preencha um pequeno formulário para cadastramento de seu **BOT** em nosso sistema e discord.\n\n{self.bot._emojis['bots']} **|** Insira o **ID** do bot que deseja adicionar: \n{self.bot._emojis['timer']} **|** **2 minutos**"
         embed = discord.Embed(description=txs, color=self.bot.cor)
             
