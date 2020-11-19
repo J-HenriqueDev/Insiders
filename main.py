@@ -4,8 +4,8 @@ import json
 from config import secrets
 from database import adicionar_user
 from discord.ext import commands
-from utils.role import emojis
-from utils.role import cargos
+from cogs.utils.role import emojis
+from cogs.utils.role import cargos
 from pymongo import MongoClient
 
 intents = discord.Intents.default()
