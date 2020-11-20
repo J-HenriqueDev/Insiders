@@ -82,7 +82,9 @@ class logs_messages(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if re.search(r'discord(?:app\\?[\s\S]com\\?\/invite|\\?[\s\S]gg|\\?[\s\S]me)\/', message.content) or re.search(r'invite\\?[\s\S]gg\\?\/[\s\S]', message.content) or "privatepage" in message.content.lower() or "naked" in message.content.lower():
-            if str("💼┃Parceiro") in [r.name for r in message.author.roles if r.name != "@everyone"] and str("") in [r.name for r in message.author.roles if r.name != "@everyone"]:
+            if str("💼┃Parceiro") in [r.name for r in message.author.roles if r.name != "@everyone"] and str("👑┃Owner") in [r.name for r in message.author.roles if r.name != "@everyone"]:
+                print("OK")
+            if message.author is message.guild.owner:    
                 print("OK")
                 
             else:
