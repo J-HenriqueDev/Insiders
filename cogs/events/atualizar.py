@@ -102,6 +102,7 @@ class Atualizar(commands.Cog):
             await self.bot.get_channel(773567922526355496).send(embed=embed)
 
         else:
+            await member.add_roles(discord.Object(772972512711409725))
             user = self.users.find_one({"_id": member.id})
             if user is None:
                 return self.bot.adicionar_user(self.users, member)

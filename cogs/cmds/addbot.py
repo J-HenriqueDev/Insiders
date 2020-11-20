@@ -41,7 +41,7 @@ class Cadastro(commands.Cog):
                 ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
             await ctx.message.add_reaction(self.bot._emojis['incorreto'].replace("<", " ").replace(">", " "))
             return
-        
+
         txs = f"{self.bot._emojis['api']} **|** Então você quer adicionar o seu **BOT** em nosso servidor?\nPara isso precisamos que você preencha um pequeno formulário para cadastramento de seu **BOT** em nosso sistema e discord.\n\n{self.bot._emojis['bots']} **|** Insira o **ID** do bot que deseja adicionar: \n{self.bot._emojis['timer']} **|** **2 minutos**"
         embed = discord.Embed(description=txs, color=self.bot.cor)
             
