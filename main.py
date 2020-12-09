@@ -57,12 +57,8 @@ class main(discord.ext.commands.Bot):
         except Exception as e:
             print(f"\n<---------------->\n( ! ) | Erro na tentativa de conexão com o banco de dados!\n<----------->\n{e}\n<---------------->\n")
             exit()
-
         self.db = mongo['insiders']
 
-
-
-        
         print(f"( > ) | Conectado ao banco de dados!")
         
     
@@ -81,9 +77,6 @@ class main(discord.ext.commands.Bot):
             await self.invoke(ctx)
         except Exception as e:
             self.dispatch('command_error', ctx, e)
-
-        
-
 
     async def on_ready(self):
         print('---------- Bot Online -----------')
@@ -131,6 +124,7 @@ if __name__ == '__main__':
             except:
                 print(f'⚠ - Módulo {filename[:-3]} não foi carregado!')
     try:
-        bot.run(secrets.TOKEN)
+
+        bot.run(secrets.TOKEN, reconnect=True, bot=True)
     except KeyboardInterrupt: 
         pass

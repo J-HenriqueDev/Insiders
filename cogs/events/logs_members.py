@@ -106,8 +106,8 @@ class logs_members(commands.Cog):
                 s = discord.Embed(description="o usuário **{}** mudou de apelido.".format(after.name),
                                 colour=self.bot.cor, timestamp=datetime.now(pytz.timezone('America/Sao_Paulo')))
                 s.set_author(name=after, icon_url=after.avatar_url)
-                s.add_field(name="Antes:", value=before.nick, inline=False)
-                s.add_field(name="Depois:", value=after.nick)
+                s.add_field(name="Antes:", value=f"``{before.nick}``", inline=False)
+                s.add_field(name="Depois:", value=f"``{after.nick}``")
                 canal = self.bot.get_channel(self.bot.logsusers)
                 if canal is None:
                     return
@@ -118,10 +118,10 @@ class logs_members(commands.Cog):
 
             if before.name != after.name:
                 s = discord.Embed(description="o usuário **{}** mudou seu nome de usuário.".format(before.name),
-                                colour=self.bot.cor, timestamp=datetime.datetime.now())
+                                colour=self.bot.cor, timestamp=datetime.now())
                 s.set_author(name=after, icon_url=after.avatar_url)
-                s.add_field(name="Antes:", value=before, inline=False)
-                s.add_field(name="Depois:", value=after)
+                s.add_field(name="Antes:", value=f"``{before}``", inline=False)
+                s.add_field(name="Depois:", value=f"``{after}``")
                 canal = self.bot.get_channel(self.bot.logsusers)
                 if canal is None:
                     return
@@ -137,14 +137,14 @@ class logs_members(commands.Cog):
                     else:  
                         desc = None
                         if len(cargos) == 1:
-                            desc = f'Cargo removido: {cargos[0]}'
+                            desc = f'Cargo removido: ``{cargos[0]}``'
                         elif len(cargos) > 1:
                             desc = 'Cargos removidos: ' + ', '.join(cargos)
                     embed = discord.Embed(title='Cargos alterados',
                                             colour=self.bot.cor,
-                                            description=f'O(A) {after.name} sofreu alteração nos cargos!\n'
-                                                        f'User: {after.mention}\n'
-                                                        f'Id: {after.id}\n'
+                                            description=f'O(A) ``{after.name}`` sofreu alteração nos cargos!\n'
+                                                        f'User: ``{after.mention}``\n'
+                                                        f'ID: ``{after.id}``\n'
                                                         f'{desc}',
                                             timestamp=datetime.utcnow())
                     embed.set_thumbnail(url=str(after.avatar_url))
@@ -153,9 +153,9 @@ class logs_members(commands.Cog):
             if (before.premium_since is None) and (after.premium_since is not None):
                     embed = discord.Embed(title='Novo booster',
                                             colour=self.bot.cor,
-                                            description=f'O(A) {after.name} começou a dar boost!\n'
+                                            description=f'**{after.name}** começou a dar boost!\n'
                                                         f'User: {after.mention}\n'
-                                                        f'Id: {after.id}\n',
+                                                        f'Id: ``{after.id}``\n',
                                             timestamp=datetime.utcnow())
                     embed.set_thumbnail(url=str(after.avatar_url))
                     logsboost = self.bot.get_channel(772972566402826242)

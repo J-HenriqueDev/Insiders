@@ -86,6 +86,8 @@ class logs_messages(commands.Cog):
                 print("OK")
             if message.author is message.guild.owner:    
                 print("OK")
+            if message.author.guild_permissions.manage_guild:
+                print("OK")
                 
             else:
                 if not message.author.id in aviso1:

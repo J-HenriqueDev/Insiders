@@ -1,23 +1,12 @@
+from os import listdir
+from json import load
+import re
+
+
 def difference_between_lists(list1: list, list2: list) -> list:
-    """
-    :param list1: Primeira lista
-    :param list2: Segunda lista
-    :type list1: list
-    :type list2: list
-    :return: Vai retornar uma lista, com os itens que não se repetiram nas listas
-    :rtype: list
-    """
     return list(set(list1) - set(list2)) + list(set(list2) - set(list1))
 
 def datetime_format(date1, date2=None) -> str:
-    """
-    :param date1: objeto datetime que vai ser subtraido pelo date2
-    :param date2: Parâmetro opcional, se não for passado nada, vai pegar o datetime utc atual
-    :type date1: datetime utc
-    :type date2: datetime utc
-    :return: vai retornar a string formatada, da diferença da date2 pela date1
-    :rtype: str
-    """
     from dateutil.relativedelta import relativedelta
     from datetime import datetime
     if date2 is None:
@@ -29,13 +18,6 @@ def datetime_format(date1, date2=None) -> str:
     hours = abs(time.hours)
     minutes = abs(time.minutes)
     seconds = abs(time.seconds)
-    """
-        variável que vai controlar quantos dados já foram mostrados
-        para evitar que a string saia muito grande, como:
-        2 anos, 5 meses, 1 dia, 2 horas, 3 minutos e 2 segundos.
-        com a variável limitando, vai sair assim:
-        2 anos, 5 meses e 1 dia.
-    """
     dados = 0
     dt_str = ''
     if (years == 0) and (months == 0) and (days <= 1):
@@ -141,4 +123,10 @@ def datetime_format(date1, date2=None) -> str:
     if dt_str.rfind(',') != -1:
         dt_str = dt_str[:dt_str.rfind(',')] + ' e' + dt_str[dt_str.rfind(',') + 1:]
     return dt_str
+
+
+
+with open('cogs/img/data/avatars.json', encoding='utf-8') as avatars:
+    avatars = load(avatars)
+
 
