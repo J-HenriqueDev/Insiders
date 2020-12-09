@@ -23,14 +23,19 @@ class bemvindo(commands.Cog):
     @commands.Cog.listener()  
     async def on_member_join(self, member):
         if member.guild.id == self.bot.guild and not member.bot:
+            numbers = ['<:0black:786085813858336778>', '<:1black:786085813791227945>', '<:2black:786085813846409256>',
+                       '<:3black:786085813829894144>', '<:4black:786085813901197312>', '<:5black:786085813829894164>',
+                       '<:5black:786085813829894164>', '<:7black:786085813850472489>', '<:8black:786085813943140352>',
+                       '<:9black:786085813854666772>']
+            text = str(member.guild.member_count)
+            list_ = list()
+            for letter in text:
+                list_.append(numbers[int(letter)])
+            list_ = str(list_).replace('[', '').replace(']', '').replace(',', '.')
             canal = self.bot.get_channel(772972557015711744)
-            membros = len(member.guild.members)
-            texto = "<a:emoji:760195465727180852> | **Membros** : "+str(membros).replace("0", "0⃣").replace("1", "1⃣").replace("2", "2⃣").replace("3", "3⃣").replace("4", "4⃣").replace("5", "5⃣").replace("6", "6⃣").replace("7", "7⃣").replace("8", "8⃣").replace("9", "9⃣")
             txt = f"{member} entrou no servidor."
-            await canal.edit(topic=texto, reason=txt)
-        
-        if member.id == 493569647082209315: #ademira
-            await member.add_roles(member.guild.get_role(772972507388444703))
+            await canal.edit(topic="<a:emoji:760195465727180852> **Membros:**  " + list_, reason=txt)
+
 
         #########################################
         async with aiohttp.ClientSession() as session:
@@ -67,7 +72,7 @@ class bemvindo(commands.Cog):
             file = discord.File(arr, filename='welcome.png')
 
             canal = self.bot.get_channel(772972552393981972)
-            texto = f"Seja bem vindo ao servidor **{self.bot.get_user(self.bot.user.id).name}**, leia as <#772972551713587210> para ficar por dentro do servidor."
+            texto = f"Seja bem vindo ao servidor **{self.bot.get_user(self.bot.user.id).name}**, leia as <#783667565141426218> para ficar por dentro do servidor."
             embed = discord.Embed(author="BEM VINDO",description=texto,color=self.bot.cor)
             embed.set_image(url='attachment://welcome.png')
             await canal.send(embed=embed, file=file,content=f"{member.mention}")
