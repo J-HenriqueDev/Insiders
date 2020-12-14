@@ -1,7 +1,9 @@
 from os import listdir
 from json import load
 import re
+from re import sub
 from random import choice, randint
+import string as string_lib
 
 
 def random_color():
@@ -127,6 +129,46 @@ def datetime_format(date1, date2=None) -> str:
     if dt_str.rfind(',') != -1:
         dt_str = dt_str[:dt_str.rfind(',')] + ' e' + dt_str[dt_str.rfind(',') + 1:]
     return dt_str
+
+def is_number(string):
+    try:
+        if string.find(',') != -1:
+
+            string = string.replace(',', '.')
+
+        string = string.replace(' ', '')
+
+        if string.isalpha():
+            return False
+
+        for char in string_lib.ascii_lowercase:
+            if char in string.lower():
+                return False
+        float(string)
+        return True
+    except ValueError:
+        return False
+
+
+
+def prettify_number(number, br=True, truncate=False):
+
+    if not is_number(str(number)):
+        return number
+
+    if truncate:
+        number = sub(r'^(\d+\.\d{,2})\d*$', r'\1', str(number))
+
+    number = str(number).split('.')
+    decimal = number[-1] if len(number) > 1 else ''
+    decimal = decimal if decimal.strip('0') else ''
+    number = number[0]
+    separator = '.' if br else ','
+    decimal_separator = ''
+    if decimal != '':
+        decimal_separator = ',' if br else '.'
+    number = f'{int(number):_}'.replace('_', separator)
+    return f'{number}{decimal_separator}{decimal}'
 
 
 

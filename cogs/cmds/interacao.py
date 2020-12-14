@@ -143,7 +143,7 @@ class Interação(commands.Cog):
             return user == member and str(reaction.emoji) == "😡"
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=12)
         except:
             return
         else:
@@ -179,7 +179,7 @@ class Interação(commands.Cog):
             return user == member and str(reaction.emoji) == "🔙"
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=12)
         except:
             return
         else:
@@ -217,7 +217,7 @@ class Interação(commands.Cog):
             return user == member and str(reaction.emoji) == "🔙"
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=12)
         except:
             return
         else:
@@ -251,7 +251,7 @@ class Interação(commands.Cog):
             return user == member and str(reaction.emoji) == "🔙"
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=12)
         except:
             return
         else:
@@ -305,7 +305,7 @@ class Interação(commands.Cog):
             return user == member and str(reaction.emoji) == "🔙"
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=12)
         except:
             return
         else:
@@ -338,7 +338,7 @@ class Interação(commands.Cog):
             return user == member and str(reaction.emoji) == "🔙"
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=12)
         except:
             return
         else:
@@ -374,7 +374,7 @@ class Interação(commands.Cog):
             return user == member and str(reaction.emoji) == "🔙"
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=12)
         except:
             return
         else:
@@ -413,7 +413,7 @@ class Interação(commands.Cog):
             return reaction.count == 6 and str(reaction.emoji) == '🔫'
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=12)
 
         except:
             return
@@ -465,7 +465,7 @@ class Interação(commands.Cog):
             return user == member and str(reaction.emoji) == "🔙"
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=12)
         except:
             return
         else:

@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from cogs.utils import botstatus
-from cogs.utils.Utils import datetime_format
+from cogs.utils.Utils import datetime_format, prettify_number
 import urllib
 import sys
 from datetime import datetime, timedelta
@@ -57,7 +57,7 @@ class informacao(commands.Cog):
       dono = await self.bot.fetch_user(478266814204477448)
       embed = discord.Embed(description="Olá {}, este é o perfil do {} e nele contém algumas informações.".format(ctx.author.name, self.bot.user.name),colour=self.bot.cor,timestamp=datetime.utcnow())
       embed.set_author(name="Informações do {}".format(self.bot.user.name), icon_url=ctx.author.avatar_url_as())
-      embed.add_field(name=f"{self.bot._emojis['dono']} Criador", value = f'``{dono}``')
+      embed.add_field(name=f"{self.bot._emojis['dono']} Criador", value = f'``🤴 {dono}``')
       embed.add_field(name=f"{self.bot._emojis['tag']} Tag", value = '``'+str(self.bot.user)+'``')
       embed.add_field(name=f"{self.bot._emojis['ip']} ID", value = '``'+str(self.bot.user.id)+'``')
       embed.add_field(name=f"{self.bot._emojis['api']} Api", value = '``Discord.py '+str(discord.__version__)+'``')
@@ -95,21 +95,26 @@ class informacao(commands.Cog):
         criado_em = str(servidor.created_at.strftime("%H:%M:%S - %d/%m/20%y"))
         dias = datetime_format(servidor.created_at)
         usuarios = " <:nsonline:761304111152758846> : ``"+str(online)+"``<:nsocupado:761304111017754635> : ``"+str(afk)+"``  <:nsdnd:761304111336783872> : ``"+str(dnd)+"`` <:nsoffline:761304111361556520> : ``"+str(offline)+f"`` {self.bot._emojis['bots']} : ``"+str(bots)+"``"
-        texto = f"{self.bot._emojis['texto']} : ``"+str(len(servidor.text_channels))+f"``{self.bot._emojis['voz']}  : ``"+str(len(servidor.voice_channels))+"``"
+        texto = f"📖 : ``"+str(len(servidor.text_channels))+f"``🗣  : ``"+str(len(servidor.voice_channels))+"``"
         cargos = len([y.id for y in servidor.roles])
         emojis = len([y.id for y in servidor.emojis])
         embed = discord.Embed(timestamp=datetime.utcnow(),description="Olá {}, aqui estão todas as informaçôes do servidor `{}`.".format(ctx.author.name, servidor.name),colour=self.bot.cor)
         embed.set_author(name=f"Informação do servidor", icon_url=ctx.author.avatar_url_as())
-        embed.add_field(name=f"{self.bot._emojis['dono']} Dono", value = "``"+str(servidor.owner)+"``")
+        embed.add_field(name=f"👑 Dono", value = "``"+str(servidor.owner)+"``")
         embed.add_field(name=f"{self.bot._emojis['nome']} Nome", value = "``"+str(servidor.name)+"``")
-        embed.add_field(name=f"{self.bot._emojis['ip']} Id", value = "``"+str(servidor.id)+"``")
-        embed.add_field(name=f"{self.bot._emojis['notas']} Criação", value =f"``{criado_em}`` ({dias})")
-        embed.add_field(name=f"{self.bot._emojis['roles']} Cargos", value = "``"+str(cargos)+"``")
-        embed.add_field(name=f"{self.bot._emojis['emoji']} Emojis", value = "``"+str(emojis)+"``")
-        embed.add_field(name=f"{self.bot._emojis['canais']} Canais", value = texto)
-        embed.add_field(name=f"{self.bot._emojis['local']} Localização", value = "``"+str(servidor.region).title()+"``")
+        embed.add_field(name=f"🆔 Id", value = "``"+str(servidor.id)+"``")
+        embed.add_field(name=f"📅 Criação", value =f"``{criado_em}`` ({dias})")
+        embed.add_field(name=f"🏅 Cargos", value = "``"+str(cargos)+"``")
+        embed.add_field(name=f"🙂 Emojis", value = "``"+str(emojis)+"``")
+        embed.add_field(name=f"💬 Canais", value = texto)
+        embed.add_field(name=f"🗺 Localização", value = "``"+str(servidor.region).title()+"``")
+        rank_members = [str(c) for c in sorted(ctx.guild.members, key=lambda x: x.joined_at)]
+        embed.add_field(name='📥 Entrei aqui em:',
+                        value=f'`{ctx.guild.me.joined_at.strftime("%d/%m/%Y")}`\n'
+                              f'({datetime_format(ctx.guild.me.joined_at)})\n',
+                        inline=False)
         embed.add_field(name=f"{self.bot._emojis['cadeado']} Verificação", value = "``"+str(servidor.verification_level).replace("none","Nenhuma").replace("low","Baixa").replace("medium","Média").replace("high","Alta").replace("extreme","Muito alta")+"``")
-        embed.add_field(name=f" Usuários"+" ["+str(geral)+"]", value = usuarios)
+        embed.add_field(name=f"👥 Membros" + " [" + str(geral) + "]", value=usuarios, inline=False)
         embed.set_thumbnail(url=img)
         if ctx.guild.banner:
             embed.set_image(url=servidor.banner_url)
@@ -124,7 +129,7 @@ class informacao(commands.Cog):
     @commands.bot_has_permissions(embed_links=True)
     @commands.guild_only()
     @commands.command(description="Mostra o icone do servidor",pass_context=True, no_pm=True, aliases=["savatar"])
-    async def serveravatar(self, ctx):
+    async def servericon(self, ctx):
       if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
         await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
         return
@@ -163,10 +168,10 @@ class informacao(commands.Cog):
         return
       if user is None:
         usuario = ctx.author
-        titulo = "Olá {}, esse é o seu perfil e aqui estão suas informações.".format(ctx.author.name)
+        titulo = "Olá ``{}``, esse é o seu perfil e aqui estão suas informações.".format(ctx.author.name)
       else:
         usuario = user
-        titulo = "Olá {}, este é o perfil de {} e nele contém umas informações.".format(ctx.author.name, usuario.name)
+        titulo = "Olá ``{}``, este é o perfil de **{}** e nele contém umas informações.".format(ctx.author.name, usuario.name)
 
       if usuario.display_name == usuario.name:
           apelido = "Não defindo"
@@ -180,39 +185,75 @@ class informacao(commands.Cog):
         img = "https://i.imgur.com/To9mDVT.png"
       else:
         img = usuario.avatar_url_as()
-      try:
-        jogo = usuario.activity.name
-      except:
-          jogo = "No momento nada."
-      if usuario.id in [y.id for y in ctx.guild.members if not y.bot]:
-        bot = "Não"
-      else:
-        bot = "Sim"
-      svs = ', '.join([c.name for c in self.bot.guilds if usuario in c.members])
+
       entrou_servidor = str(usuario.joined_at.strftime("%d/%m/20%y ás %H:%M:%S"))
       conta_criada = str(usuario.created_at.strftime("%d/%m/20%y"))
       conta_dias = datetime_format(usuario.created_at)
-      cargos = len([r.name for r in usuario.roles if r.name != "@everyone"])
-      if not svs: 
-        svs = 'Nenhum servidor em comum.'
+      cargos = ', '.join(
+          [f"<@&{x.id}>" for x in sorted(usuario.roles, key=lambda x: x.position, reverse=True) if
+           x.id != ctx.guild.default_role.id]
+      ) if len(usuario.roles) > 1 else None
+
       on = "Disponível"
       off = "Offline"
       dnd = "Não Pertubar"
       afk = "Ausente"
       stat = str(usuario.status).replace("online",on).replace("offline",off).replace("dnd",dnd).replace("idle",afk)
-      cargos2 = len([y.id for y in ctx.guild.roles])
+
       embed = discord.Embed(description=titulo,colour=self.bot.cor,timestamp=datetime.utcnow())
-      embed.set_author(name=f"Informação de perfil", icon_url=ctx.author.avatar_url_as())
-      embed.add_field(name=f"{self.bot._emojis['tag']} Tag", value = "``"+str(usuario.name)+"#"+str(usuario.discriminator)+"``")
-      embed.add_field(name=f"{self.bot._emojis['ip']} Id", value = "``"+str(usuario.id)+"``")
-      embed.add_field(name=f"{self.bot._emojis['nome']} Apelido", value = "``"+str(apelido)+"``")
-      embed.add_field(name=f"{self.bot._emojis['notas']} Criação da conta", value =f"``{conta_criada}`` ({conta_dias} dias)")
-      embed.add_field(name=f"{self.bot._emojis['entrou']} Entrou aqui em", value = "``"+str(entrou_servidor)+"``")
-      embed.add_field(name=f"{self.bot._emojis['toprole']} Maior cargo", value = "``"+str(top_cargo)+"``")
-      embed.add_field(name=f"{self.bot._emojis['roles']} Cargos", value = "``"+str(cargos)+"/"+str(cargos2)+"``")
-      embed.add_field(name=f"{self.bot._emojis['bots']} Bot", value = "``"+str(bot)+"``")
-      embed.add_field(name=f"{self.bot._emojis['status']} Status", value = "``"+str(stat)+"``")
-      embed.add_field(name=f"{self.bot._emojis['discord']} Servidores em comun",value=f"`{svs}`")
+      embed.set_author(name=f"Informação de perfil:", icon_url=ctx.author.avatar_url_as())
+      embed.add_field(name=f"📑 Tag:", value = "``"+str(usuario.name)+"#"+str(usuario.discriminator)+"``")
+      embed.add_field(name=f"🆔 Id:", value = "``"+str(usuario.id)+"``")
+      embed.add_field(name=f"📓 Apelido:", value = "``"+str(apelido)+"``")
+      embed.add_field(name=f":calendar_spiral: Criação da conta:", value =f"``{conta_criada}`` ({conta_dias} dias)")
+      embed.add_field(name=f":inbox_tray: Entrou aqui em:", value = "``"+str(entrou_servidor)+"``")
+      embed.add_field(name=f"🔝 Maior cargo:", value = "``"+str(top_cargo)+"``")
+      embed.add_field(name=f":detective: Status:", value = "``"+str(stat)+"``")
+      activities = usuario.activities
+      streaming = False
+      custom = False
+      playing = False
+      if len(activities) != 0:
+          for activity in activities:
+              if (activity.type.name == 'streaming') and (not streaming):
+                  embed.add_field(name=f'Fazendo live',
+                                  value=f'**🎙 Plataforma**: `{activity.platform}`\n'
+                                        f'**🏷 Nome da live**: `{activity.name}`\n'
+                                        f'**🕛 Começou**: `{datetime_format(activity.created_at)}`',
+                                  inline=True)
+                  streaming = True
+              elif (activity.type.name == 'custom') and (not custom):
+                  if (activity.emoji is not None) or (activity.name is not None):
+                      if activity.emoji is not None:
+                          if activity.emoji.id in [c.id for c in self.bot.emojis]:
+                              emoji = f'{activity.emoji}'
+                          else:
+                              emoji = f'❓'
+                      else:
+                          emoji = '`🚫 Nulo`'
+                      if activity.name is not None:
+                          texto = f'`{activity.name}`'
+                      else:
+                          texto = '`🚫 Nulo`'
+                      embed.add_field(name=f'Status personalizado',
+                                      value=f'🔰 Emoji: {emoji}\n'
+                                            f'🖋 Frase: {texto}',
+                                      inline=True)
+                      custom = True
+              elif (activity.type.name == 'playing') and (not playing):
+                  if activity.start is not None:
+                      value = f'`{activity.name}`\n**🕛 Começou a jogar:**\n' + \
+                              f'`{datetime_format(activity.start)}`'
+                  else:
+                      value = f'`{activity.name}`'
+                  embed.add_field(name='🕹 Jogando',
+                                  value=value,
+                                  inline=True)
+                  playing = True
+      rank_members = [str(c) for c in sorted(usuario.guild.members, key=lambda x: x.joined_at)]
+      embed.add_field(name=f'🏆 Posição de entrada:',value=f'\n`{prettify_number(rank_members.index(str(usuario)) + 1)}°` posição,',
+                      inline=True)
+      embed.add_field(name=f"🎖 Cargos:", value=f"{str(cargos)}",inline=False)
       embed.set_thumbnail(url=img)
       embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
       await ctx.send(embed = embed)
@@ -333,33 +374,7 @@ class informacao(commands.Cog):
           embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
           await ctx.send(embed=embed)
           return
-"""
 
-    @commands.guild_only()
-    @commands.command(aliases=["einfo", "infoemoji", "emoji", "emojinfo"])
-    async def emojiinfo(self, ctx, *, emoji: discord.Emoji):
-        if not str(ctx.channel.id) in self.bot.canais and not ctx.author.id in self.bot.dono and not ctx.author.id in self.bot.adms:
-          await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
-          return
-        embed = discord.Embed(color=self.bot.cor, timestamp=datetime.datetime.utcnow())
-        embed.set_author(name=f"Informações do emoji:", icon_url=emoji.url)
-        embed.add_field(name=" Nome:", value=f"``{emoji.name}``",inline=False)
-        coisa = f"{emoji.animated}"
-        if emoji.animated:
-            # if emoji.animated == 'True':
-            embed.add_field(name=" Emoji Animado:", value=f"``Sim``", inline=False)
-            # elif emoji.animated == 'False':
-            #     embed.add_field(name="<:m_star:572234473605824532> Emoji Normal:", value=f"``Sim``", inline=False)
-        else:
-            embed.add_field(name=" Emoji Normal:", value=f"``Sim``", inline=False)
-        embed.add_field(name=" ID", value=f"``{emoji.id}``", inline=False)
-        embed.add_field(name=" Link:", value=f"[``Clique aqui``]({emoji.url})", inline=False)
-        embed.add_field(name=" Adicionado em:", value=f"``{emoji.created_at.__format__('%d/%m/%Y às %H:%M')}``", inline=False)
-        embed.set_thumbnail(url=emoji.url)
-        embed.set_footer(text=f'{self.bot.user.name}© 2020', icon_url="https://i.imgur.com/Me7NqbZ.jpg") 
-        await ctx.send(embed=embed)
-
-    """
 
 def setup(bot):
     bot.add_cog(informacao(bot))
