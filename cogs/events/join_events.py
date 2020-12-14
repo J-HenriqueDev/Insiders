@@ -31,7 +31,7 @@ class bemvindo(commands.Cog):
             list_ = list()
             for letter in text:
                 list_.append(numbers[int(letter)])
-            list_ = str(list_).replace('[', '').replace(']', '').replace(',', '.')
+            list_ = str(list_).replace('[', '').replace(']', '').replace(',', '.').replace("'","").replace(".","")
             canal = self.bot.get_channel(772972557015711744)
             txt = f"{member} entrou no servidor."
             await canal.edit(topic="<a:emoji:760195465727180852> **Membros:**  " + list_, reason=txt)

@@ -1,7 +1,11 @@
 from os import listdir
 from json import load
 import re
+from random import choice, randint
 
+
+def random_color():
+    return int(f'0x{randint(0, 255):01x}{randint(0, 255):02x}{randint(0, 255):02x}', 16)
 
 def difference_between_lists(list1: list, list2: list) -> list:
     return list(set(list1) - set(list2)) + list(set(list2) - set(list1))

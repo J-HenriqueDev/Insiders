@@ -7,6 +7,7 @@ from discord.ext import commands
 from cogs.utils.role import emojis
 from cogs.utils.role import cargos
 from pymongo import MongoClient
+from cogs.utils.Utils import random_color
 
 intents = discord.Intents.default()
 intents.members = True
@@ -48,8 +49,8 @@ class main(discord.ext.commands.Bot):
         
         
         self.token = 'blz,talvez outro dia.'
-        self.cor = 0xf10cdb
         self.color = 0x36393F
+        self.cor = random_color()
 
         print("( * ) | Tentando se conectar ao banco de dados...")
         try:
@@ -61,9 +62,6 @@ class main(discord.ext.commands.Bot):
 
         print(f"( > ) | Conectado ao banco de dados!")
         
-    
-
-
 
     async def on_message(self, message):
         if message.guild is None:
