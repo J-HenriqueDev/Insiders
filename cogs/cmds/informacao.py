@@ -55,17 +55,17 @@ class informacao(commands.Cog):
         return
       mem = botstatus.get_memory()
       dono = await self.bot.fetch_user(478266814204477448)
-      embed = discord.Embed(description="Olá {}, este é o perfil do {} e nele contém algumas informações.".format(ctx.author.name, self.bot.user.name),colour=self.bot.cor,timestamp=datetime.utcnow())
+      embed = discord.Embed(description="Olá {}, aqui temos algumas informações basicas sobre mim.".format(ctx.author.name),colour=self.bot.cor,timestamp=datetime.utcnow())
       embed.set_author(name="Informações do {}".format(self.bot.user.name), icon_url=ctx.author.avatar_url_as())
-      embed.add_field(name=f"{self.bot._emojis['dono']} Criador", value = f'``🤴 {dono}``')
-      embed.add_field(name=f"{self.bot._emojis['tag']} Tag", value = '``'+str(self.bot.user)+'``')
-      embed.add_field(name=f"{self.bot._emojis['ip']} ID", value = '``'+str(self.bot.user.id)+'``')
-      embed.add_field(name=f"{self.bot._emojis['api']} Api", value = '``Discord.py '+str(discord.__version__)+'``')
-      embed.add_field(name=f"{self.bot._emojis['python']} Python", value = '``'+str(sys.version[:5])+'``')
-      embed.add_field(name=f"{self.bot._emojis['ram']} Memória", value = '``'+str(mem["memory_used"])+'/'+str(mem["memory_total"])+' ('+str(mem["memory_percent"])+')``')
-      embed.add_field(name=f"{self.bot._emojis['timer']} Tempo de atividade", value = '``'+str(botstatus.timetotal()).replace("{day}","dia").replace("{hour}","hora").replace("{minute}","minuto").replace("{second}","segundo")+'``')
-      embed.add_field(name=f"{self.bot._emojis['guilds']} Servidores", value = '``'+str(len(self.bot.guilds))+' (shards '+"1"+')``')
-      embed.add_field(name=f"{self.bot._emojis['ping']} Lâtencia", value = '``{0:.2f}ms``'.format(self.bot.latency * 1000))
+      embed.add_field(name=f"👑 Criador", value = f'``{dono}``')
+      embed.add_field(name=f"🏷 Tag", value = '``'+str(self.bot.user)+'``')
+      embed.add_field(name=f"🆔 ID", value = '``'+str(self.bot.user.id)+'``')
+      embed.add_field(name=f"🈴 Api", value = '``Discord.py '+str(discord.__version__)+'``')
+      embed.add_field(name=f"🐍 Python", value = '``'+str(sys.version[:5])+'``')
+      embed.add_field(name=f"💮 Memória", value = '``'+str(mem["memory_used"])+'/'+str(mem["memory_total"])+' ('+str(mem["memory_percent"])+')``')
+      embed.add_field(name=f"⏳ Tempo de atividade", value = '``'+str(botstatus.timetotal()).replace("{day}","dia").replace("{hour}","hora").replace("{minute}","minuto").replace("{second}","segundo")+'``')
+      embed.add_field(name=f"<a:dance3:654751224633098250> Servidores", value = '``'+str(len(self.bot.guilds))+' (shards '+"1"+')``')
+      embed.add_field(name=f"📶 Lâtencia", value = '``{0:.2f}ms``'.format(self.bot.latency * 1000))
       #embed.add_field(name=f"{self.bot._emojis['cpu']} Porcentágem da CPU",value=f'``{botstatus.cpu_usage()}%``')
       #embed.add_field(name=f"<:ping:564890304839417887> Processador", value=f'``{botstatus.host_name()}``')
       embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
@@ -101,7 +101,8 @@ class informacao(commands.Cog):
         embed = discord.Embed(timestamp=datetime.utcnow(),description="Olá {}, aqui estão todas as informaçôes do servidor `{}`.".format(ctx.author.name, servidor.name),colour=self.bot.cor)
         embed.set_author(name=f"Informação do servidor", icon_url=ctx.author.avatar_url_as())
         embed.add_field(name=f"👑 Dono", value = "``"+str(servidor.owner)+"``")
-        embed.add_field(name=f"{self.bot._emojis['nome']} Nome", value = "``"+str(servidor.name)+"``")
+        embed.add_field(name=f"📑 Nome", value="``" + str(servidor.name) + "``")
+        embed.add_field(name=f"🔒  Verificação", value = "``"+str(servidor.verification_level).replace("none","Nenhuma").replace("lww","Baixa").replace("medium","Média").replace("high","Alta").replace("extreme","Muito alta")+"``")
         embed.add_field(name=f"🆔 Id", value = "``"+str(servidor.id)+"``")
         embed.add_field(name=f"📅 Criação", value =f"``{criado_em}`` ({dias})")
         embed.add_field(name=f"🏅 Cargos", value = "``"+str(cargos)+"``")
@@ -113,7 +114,7 @@ class informacao(commands.Cog):
                         value=f'`{ctx.guild.me.joined_at.strftime("%d/%m/%Y")}`\n'
                               f'({datetime_format(ctx.guild.me.joined_at)})\n',
                         inline=False)
-        embed.add_field(name=f"{self.bot._emojis['cadeado']} Verificação", value = "``"+str(servidor.verification_level).replace("none","Nenhuma").replace("low","Baixa").replace("medium","Média").replace("high","Alta").replace("extreme","Muito alta")+"``")
+
         embed.add_field(name=f"👥 Membros" + " [" + str(geral) + "]", value=usuarios, inline=False)
         embed.set_thumbnail(url=img)
         if ctx.guild.banner:
@@ -205,7 +206,7 @@ class informacao(commands.Cog):
       embed.add_field(name=f"📑 Tag:", value = "``"+str(usuario.name)+"#"+str(usuario.discriminator)+"``")
       embed.add_field(name=f"🆔 Id:", value = "``"+str(usuario.id)+"``")
       embed.add_field(name=f"📓 Apelido:", value = "``"+str(apelido)+"``")
-      embed.add_field(name=f":calendar_spiral: Criação da conta:", value =f"``{conta_criada}`` ({conta_dias} dias)")
+      embed.add_field(name=f"📅 Criação da conta:", value =f"``{conta_criada}`` ({conta_dias})")
       embed.add_field(name=f":inbox_tray: Entrou aqui em:", value = "``"+str(entrou_servidor)+"``")
       embed.add_field(name=f"🔝 Maior cargo:", value = "``"+str(top_cargo)+"``")
       embed.add_field(name=f":detective: Status:", value = "``"+str(stat)+"``")
@@ -251,7 +252,7 @@ class informacao(commands.Cog):
                                   inline=True)
                   playing = True
       rank_members = [str(c) for c in sorted(usuario.guild.members, key=lambda x: x.joined_at)]
-      embed.add_field(name=f'🏆 Posição de entrada:',value=f'\n`{prettify_number(rank_members.index(str(usuario)) + 1)}°` posição,',
+      embed.add_field(name=f'🏆 Posição de entrada:',value=f'\n`{prettify_number(rank_members.index(str(usuario)) + 1)}°`',
                       inline=True)
       embed.add_field(name=f"🎖 Cargos:", value=f"{str(cargos)}",inline=False)
       embed.set_thumbnail(url=img)
@@ -302,31 +303,31 @@ class informacao(commands.Cog):
         channel_created = str(channel.created_at.strftime("%H:%M:%S - %d/%m/20%y"))
         embed = discord.Embed(description="Olá {}, esta são as informações do canal {}.".format(ctx.author.name, channel.mention),colour=self.bot.cor,timestamp=datetime.utcnow())
         embed.set_author(name=f"Informações do canal", icon_url=ctx.author.avatar_url_as())
-        embed.add_field(name=f"{self.bot._emojis['nome']} Nome", value = "``"+str(channel.name)+"``",inline=False)
-        embed.add_field(name=f"{self.bot._emojis['ip']} ID", value = "``"+str(channel.id)+"``",inline=False)
-        embed.add_field(name=f"{self.bot._emojis['notas']} Criação", value =f"``{channel_created}``({datetime_format(channel.created_at)})",inline=False)
-        embed.add_field(name=f"{self.bot._emojis['canais']} Posição", value = "``"+str(channel.position)+"``",inline=False)
-        embed.add_field(name=f"{self.bot._emojis['tipo']} Tipo do canal", value = "``"+str(channel_type)+"``",inline=False)
+        embed.add_field(name=f"📑 Nome", value = "``"+str(channel.name)+"``",inline=False)
+        embed.add_field(name=f"🆔 ID", value = "``"+str(channel.id)+"``",inline=False)
+        embed.add_field(name=f"📅 Criação", value =f"``{channel_created}``({datetime_format(channel.created_at)})",inline=False)
+        embed.add_field(name=f"📓 Posição", value = "``"+str(channel.position)+"``",inline=False)
+        embed.add_field(name=f"🚥 Tipo do canal", value = "``"+str(channel_type)+"``",inline=False)
         try:
-          embed.add_field(name=f"{self.bot._emojis['porn']} +18", value = "```"+str(channel.is_nsfw()).replace("False","Não").replace("True","Sim")+"```",inline=False)
+          embed.add_field(name=f"🔞 +18", value = "```"+str(channel.is_nsfw()).replace("False","Não").replace("True","Sim")+"```",inline=False)
           if channel.slowmode_delay == 0:
             valor = "Não definido"
           else:
             valor = "{} segundos".format(channel.slowmode_delay)
-          embed.add_field(name=f"{self.bot._emojis['timer']} Slowmode", value = "``"+str(valor)+"``",inline=False)
+          embed.add_field(name=f"⌚ Slowmode", value = "``"+str(valor)+"``",inline=False)
           if channel.topic is None:
             topic = "Não definido"
           else:
             topic = channel.topic
-          embed.add_field(name=f"{self.bot._emojis['tpico']} Tópico", value = "``"+str(topic[:1024])+"``",inline=False)          
+          embed.add_field(name=f"♉ Tópico", value = "``"+str(topic[:1024])+"``",inline=False)
         except:
           pass
         try:
-          embed.add_field(name=f"{self.bot._emojis['voz']} Bitrate", value = "``"+str(channel.bitrate)+"``")
+          embed.add_field(name=f"🔈 Bitrate", value = "``"+str(channel.bitrate)+"``")
           if channel.user_limit != 0:
-            embed.add_field(name=f"{self.bot._emojis['pessoas']} Usuários conectados", value="``{}/{}``".format(len(channel.members), channel.user_limit),inline=False)
+            embed.add_field(name=f"👨‍👨‍👦 Usuários conectados", value="``{}/{}``".format(len(channel.members), channel.user_limit),inline=False)
           else:
-            embed.add_field(name=f"{self.bot._emojis['pessoas']} Usuários conectados", value="``{}``".format(len(channel.members)),inline=False)          
+            embed.add_field(name=f"👨‍👨‍👦 Usuários conectados", value="``{}``".format(len(channel.members)),inline=False)
         except:
           pass         
 
@@ -348,18 +349,18 @@ class informacao(commands.Cog):
         criado_em = str(role.created_at.strftime("%H:%M:%S - %d/%m/20%y"))
         embed = discord.Embed(color=self.bot.cor,timestamp=datetime.utcnow())
         embed.set_author(name="Informação do cargo", icon_url=ctx.author.avatar_url_as())
-        embed.add_field(name=f"{self.bot._emojis['tag']} Nome:", value="``"+str(role.name)+"``")
-        embed.add_field(name=f"{self.bot._emojis['ip']} ID:", value=f"``"+str(role.id)+"``")
+        embed.add_field(name=f"📑 Nome:", value="``"+str(role.name)+"``")
+        embed.add_field(name=f"🆔 ID:", value=f"``"+str(role.id)+"``")
         mention = f"{role.mentionable}"
-        embed.add_field(name=f"{self.bot._emojis['mention']} Mencionável:", value=f"``{mention.replace('False','Não').replace('True', 'Sim')}``")
-        embed.add_field(name=f"{self.bot._emojis['cor']} Cor:", value="``"+str(role.colour)+"``")
+        embed.add_field(name=f"@ Mencionável:", value=f"``{mention.replace('False','Não').replace('True', 'Sim')}``")
+        embed.add_field(name=f"🎨 Cor:", value="``"+str(role.colour)+"``")
         separado = f"{role.hoist}"
-        embed.add_field(name=f"{self.bot._emojis['canais']} Posição do Cargo:", value=f"``{role.position}º``")
-        embed.add_field(name=f"{self.bot._emojis['separado']} Separado dos Membros:", value=f"``{separado.replace('True','Sim').replace('False','Não')}``")
-        embed.add_field(name=f"{self.bot._emojis['notas']} Data de Criação:", value=f"``"+str(criado_em)+"``")
-        embed.add_field(name=f"{self.bot._emojis['pessoas']} Membro(s) com o cargo:", value=f"``{len(role.members)}``")
+        embed.add_field(name=f"📓 Posição do Cargo:", value=f"``{role.position}º``")
+        embed.add_field(name=f"⚙ Separado dos Membros:", value=f"``{separado.replace('True','Sim').replace('False','Não')}``")
+        embed.add_field(name=f"📅 Data de Criação:", value=f"``"+str(criado_em)+"``")
+        embed.add_field(name=f"👨‍👨‍👦 Membro(s) com o cargo:", value=f"``{len(role.members)}``")
         perm = f"{perms_check(role.permissions)}"
-        embed.add_field(name=f"{self.bot._emojis['cadeado']} Permissões:", value=f"``{perm.replace('use_voice_activation','Usar detecção de voz').replace('add_reactions','Adicionar reações').replace('administrator','Administrador').replace('attach_files','Anexar arquivos').replace('ban_members','Banir membros').replace('change_nickname','Mudar apelido').replace('connect','Conectar').replace('create_instant_invite','Criar um convite instatâneo').replace('deafen_members','Desativar áudio de membros').replace('embed_links','Inserir Links').replace('external_emojis','Emojis externos').replace('kick_members','Expulsar membros').replace('manage_channels','Gerenciar canais').replace('manage_emojis','Gerenciar emojis').replace('manage_guild','Gerenciar o servidor').replace('manage_messages','Gerenciar Mensagens').replace('manage_nicknames','Gerenciar apelidos').replace('manage_roles','Gerenciar cargos').replace('manage_webhooks','Gerenciar Webhooks').replace('mention_everyone','Mencionar todos').replace('move_members','Mover membros').replace('mute_members','Silenciar membros').replace('read_message_history','Ler histórico de mensagens').replace('read_messages','Ler mensagens').replace('send_messages','Enviar mensagens').replace('send_tts_messages','Enviar mensagem TTS').replace('speak','Falar').replace('view_audit_log','Ver registro de auditoria')}``")
+        embed.add_field(name=f"🔒 Permissões:", value=f"``{perm.replace('use_voice_activation','Usar detecção de voz').replace('add_reactions','Adicionar reações').replace('administrator','Administrador').replace('attach_files','Anexar arquivos').replace('ban_members','Banir membros').replace('change_nickname','Mudar apelido').replace('connect','Conectar').replace('create_instant_invite','Criar um convite instatâneo').replace('deafen_members','Desativar áudio de membros').replace('embed_links','Inserir Links').replace('external_emojis','Emojis externos').replace('kick_members','Expulsar membros').replace('manage_channels','Gerenciar canais').replace('manage_emojis','Gerenciar emojis').replace('manage_guild','Gerenciar o servidor').replace('manage_messages','Gerenciar Mensagens').replace('manage_nicknames','Gerenciar apelidos').replace('manage_roles','Gerenciar cargos').replace('manage_webhooks','Gerenciar Webhooks').replace('mention_everyone','Mencionar todos').replace('move_members','Mover membros').replace('mute_members','Silenciar membros').replace('read_message_history','Ler histórico de mensagens').replace('read_messages','Ler mensagens').replace('send_messages','Enviar mensagens').replace('send_tts_messages','Enviar mensagem TTS').replace('speak','Falar').replace('view_audit_log','Ver registro de auditoria')}``")
         embed.set_thumbnail(url='https://htmlcolors.com/color-image/{}.png'.format(str(role.color).strip("#")))
         embed.set_footer(text=self.bot.user.name+" © 2020", icon_url=self.bot.user.avatar_url_as())
         await ctx.send(embed=embed)

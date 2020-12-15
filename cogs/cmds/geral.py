@@ -147,7 +147,7 @@ class Geral(commands.Cog):
             base.save(arr, format='PNG')
             arr.seek(0)
             file = discord.File(arr, filename='imagem0.png')
-            await ctx.send(file=file)
+            await ctx.send(content=f"{ctx.author.mention}", file=file)
 
     @commands.bot_has_permissions(embed_links=True)
     @commands.command(description='Listagem e informações de todos os comandos públicos lançados até o momento',usage='c.ajuda',aliases=['help'])
@@ -328,7 +328,7 @@ class Geral(commands.Cog):
         try: 
             entries["user"]
         except:
-            return await ctx.send("No-one has made an invite in this server :no_entry:")
+            return await ctx.send("Atualmente ninguém criou um convite neste servidor.")
         if page < 1 or page > math.ceil(len(entries["user"])/10):
             return await ctx.send("Página Inválida")
         sorted_invites = sorted(entries["user"].items(), key=lambda x: x[1]["uses"], reverse=True)
@@ -350,9 +350,9 @@ class Geral(commands.Cog):
             user = discord.utils.get(ctx.guild.members, id=int(x[0]))
             if not user:
                 user = "Usuário não encontrado"
-            msg += "{}. `{}` - {:,} {} ({}%)\n".format(i, user, x[1]["uses"], "invite" if x[1]["uses"] == 1 else "invites", percent)
-        s=discord.Embed(title="TOP Inviters", description=msg, colour=0xed2939)
-        s.set_footer(text="{}'s Rank: {} | Página {}/{}".format(ctx.author.name, "#{}".format(place) if place else "Unranked", page, math.ceil(len(entries["user"])/10)), icon_url=ctx.author.avatar_url)
+            msg += "{}º. `{}` - {:,} {} ({}%)\n".format(i, user, x[1]["uses"], "invite" if x[1]["uses"] == 1 else "invites", percent)
+        s=discord.Embed(title="TOP Inviters", description=msg, colour=self.bot.cor)
+        s.set_footer(text="{}'s Rank: {} | Página {}/{}".format(ctx.author.name, "#{}".format(place) if place else "Sem Rank", page, math.ceil(len(entries["user"])/10)), icon_url=ctx.author.avatar_url)
         await ctx.send(embed=s)
 
         
