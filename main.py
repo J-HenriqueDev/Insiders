@@ -21,7 +21,7 @@ class main(discord.ext.commands.Bot):
                         pm_help=None,
                         shard_count=1,
                         shard_ids=[0],
-                        activity=discord.Activity(type=discord.ActivityType.watching, name='instagram.com/gostosazapi', status=discord.Status.do_not_disturb),
+                        #activity=discord.Activity(type=discord.ActivityType.watching, name='instagram.com/gostosazapi', status=discord.Status.do_not_disturb),
                         intents=intents)
         
         self.remove_command('help')

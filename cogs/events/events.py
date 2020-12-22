@@ -42,7 +42,7 @@ class events(commands.Cog):
             if lvl == 20:
                 await message.mentions[0].add_roles(message.guild.get_role(772972512065749013),reason=f"{message.mentions[0]} recebeu o cargo Membro Plus.")
 
-
+    '''
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         channel_id = payload.channel_id
@@ -170,6 +170,6 @@ class events(commands.Cog):
                 except:
                     pass
 
-
+'''
 def setup(bot):
     bot.add_cog(events(bot))
