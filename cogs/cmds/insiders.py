@@ -27,8 +27,10 @@ class Insiders(commands.Cog):
 
         if not ctx.author.id in self.users and not ctx.author.id in self.bot.adms and not ctx.author.id in self.bot.dono:
             #await ctx.message.add_reaction(self.bot._emojis["incorreto"].replace("<", " ").replace(">", " "))
-            return await ctx.send(content=f"a", embed=discord.Embed(timestamp=datetime.utcnow(),color=self.bot.cor,
-                                                                                         description=f"Para utilizar esse comando é necessario pagar uma taxa de 15000 sonhos para @Neo_#0291.\n\nUtilize +pay @Neo_#0291 15k")).set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
+            embebo = discord.Embed(timestamp=datetime.utcnow(), color=self.bot.cor,
+                                   description=f"Para utilizar esse comando é necessario pagar uma taxa de 15000 sonhos para @Neo_#0291.\n\nUtilize +pay @Neo_#0291 15k")
+            embebo.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
+            return await ctx.send(content=f"a", embed=embebo)
 
         if ctx.author == member:
             return await ctx.send(content=f"{ctx.author.mention}", embed=discord.Embed(timestamp=datetime.utcnow(),color=self.bot.cor,
@@ -57,6 +59,11 @@ class Insiders(commands.Cog):
             return
         else:
             #await msg.delete()
+            if member.id not in self.users:
+                embebo1 = discord.Embed(coluor=self.bot.cor,
+                                       description=f"Para utilizar esse comando é necessario pagar uma taxa de 15000 sonhos para @Neo_#0291.\n\nUtilize +pay @Neo_#0291 15k")
+                embebo1.set_footer(text=self.bot.user.name + " © 2020", icon_url=self.bot.user.avatar_url_as())
+                return await ctx.send(content=f"{member.mention}",embed=embebo1)
             author = ctx.author
             ctx.author = member
             await ctx.invoke(ctx.command, member=author)

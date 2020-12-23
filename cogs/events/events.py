@@ -30,13 +30,13 @@ class events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self,message):
-        if message.channel.id == 772972553769713735:    
+        if message.channel.id == self.bot.sugestao:
             await message.add_reaction(self.bot._emojis["correto"].replace("<"," ").replace(">"," "))
             return await message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
-        elif message.channel.id == 775080884138147850:
+        elif message.channel.id == self.bot.sugestao:
             await message.add_reaction(self.bot._emojis["correto"].replace("<"," ").replace(">"," "))
             return await message.add_reaction(self.bot._emojis["incorreto"].replace("<"," ").replace(">"," "))
-        elif message.channel.id == 774389441456373761:
+        elif message.channel.id == 791140543815483412:
             content = message.content
             lvl = int(content[content.find('`') + 1:content.rfind('`')])
             if lvl == 20:

@@ -343,6 +343,7 @@ class Interação(commands.Cog):
             return
         else:
             await msg.delete()
+
             author = ctx.author
             ctx.author = member
             await ctx.invoke(ctx.command, member=author)

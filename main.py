@@ -35,17 +35,17 @@ class main(discord.ext.commands.Bot):
         
         
         self.adicionar_user = adicionar_user
-        self.logschannels = 772998516707426334
-        self.logsroles = 772998619304951810
-        self.logsusers = 773567922526355496
-        self.logscargos = 772998619304951810
-        self.sugestao = 772972553769713735
-        self.canais = ["772972558605090836","772972567308664882"]
-        self.logs = 772972569326387232
-        self.bans = 772972568655298574
+        self.logschannels = 772494035063275520
+        self.logsroles = 772494035063275520
+        self.logsusers = 772494035063275520
+        self.logscargos = 772494035063275520
+        self.sugestao = 791131875988733963
+        self.canais = ["791131878090080257"]
+        self.logs = 772494035063275520
+        self.bans = 772494035063275520
         self.guild = 635624989193666591
-        self.regras = 772972551713587210
-        self.helper = 773518943490015233
+        self.regras = 791131860520534036
+
         
         
         self.token = 'blz,talvez outro dia.'
