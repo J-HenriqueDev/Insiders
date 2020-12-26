@@ -40,7 +40,7 @@ class logs_messages(commands.Cog):
                     timelocal = datetime.now(pytz.timezone('America/Sao_Paulo'))
                     time = str(timelocal.strftime("%H:%M:%S - %d/%m/20%y"))
                     embed.add_field(name="Horário", value=f"``{time}``", inline=True)
-                    canal = message.guild.get_channel(self.bot.logs)
+                    canal = self.bot.get_channel(self.bot.logs)
                     if canal is None:
                         return
                     await canal.send(embed=embed)
@@ -74,7 +74,7 @@ class logs_messages(commands.Cog):
                     timelocal = datetime.now(pytz.timezone('America/Sao_Paulo'))
                     time = str(timelocal.strftime("%H:%M:%S - %d/%m/20%y"))
                     embed.add_field(name="Horário", value=f"``{time}``", inline=True)
-                    canal = before.guild.get_channel(self.bot.logs)
+                    canal = self.bot.get_channel(self.bot.logs)
                     if canal is None:
                         return
                     await canal.send(embed=embed)
