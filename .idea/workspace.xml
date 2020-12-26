@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c2143b5-319f-464c-9595-7cb5522fb8d8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/cmds/insiders.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/cmds/insiders.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/cmds/interacao.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/cmds/interacao.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/events/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/events/events.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/events/join_events.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/events/join_events.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/secrets.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/secrets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,22 +71,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1607025146287" />
-    <state width="1899" height="308" key="GridCell.Tab.0.bottom" timestamp="1608695701709">
+    <state width="1899" height="308" key="GridCell.Tab.0.bottom" timestamp="1608698100165">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="308" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1608695701709" />
-    <state width="1899" height="308" key="GridCell.Tab.0.center" timestamp="1608695701709">
+    <state width="1899" height="308" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1608698100165" />
+    <state width="1899" height="308" key="GridCell.Tab.0.center" timestamp="1608698100165">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="308" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1608695701709" />
-    <state width="1899" height="308" key="GridCell.Tab.0.left" timestamp="1608695701709">
+    <state width="1899" height="308" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1608698100165" />
+    <state width="1899" height="308" key="GridCell.Tab.0.left" timestamp="1608698100165">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="308" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1608695701709" />
-    <state width="1899" height="308" key="GridCell.Tab.0.right" timestamp="1608695701709">
+    <state width="1899" height="308" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1608698100165" />
+    <state width="1899" height="308" key="GridCell.Tab.0.right" timestamp="1608698100165">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="308" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608695701709" />
+    <state width="1899" height="308" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608698100165" />
     <state x="623" y="225" key="search.everywhere.popup" timestamp="1607016076639">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

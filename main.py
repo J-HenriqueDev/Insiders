@@ -40,7 +40,7 @@ class main(discord.ext.commands.Bot):
         self.logsusers = 772494035063275520
         self.logscargos = 772494035063275520
         self.sugestao = 791131875988733963
-        self.canais = ["791131878090080257"]
+        self.canais = [791131878090080257]
         self.logs = 772494035063275520
         self.bans = 772494035063275520
         self.guild = 635624989193666591
