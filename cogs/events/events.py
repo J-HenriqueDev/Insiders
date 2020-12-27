@@ -39,8 +39,8 @@ class events(commands.Cog):
         elif message.channel.id == 791140543815483412:
             content = message.content
             lvl = int(content[content.find('`') + 1:content.rfind('`')])
-            if lvl == 20:
-                await message.mentions[0].add_roles(message.guild.get_role(772972512065749013),reason=f"{message.mentions[0]} recebeu o cargo Membro Plus.")
+            if lvl == 15:
+                await message.mentions[0].add_roles(message.guild.get_role(791131771336392715),reason=f"{message.mentions[0]} recebeu o cargo de alterar apelido.")
 
     '''
     @commands.Cog.listener()

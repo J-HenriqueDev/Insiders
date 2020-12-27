@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c2143b5-319f-464c-9595-7cb5522fb8d8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/cogs/events/logs_messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/events/logs_messages.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/cmds/informacao.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/cmds/informacao.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/events/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/events/events.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/events/join_events.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/events/join_events.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/secrets.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/secrets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

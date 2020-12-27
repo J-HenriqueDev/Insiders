@@ -72,11 +72,10 @@ class bemvindo(commands.Cog):
             file = discord.File(arr, filename='welcome.png')
 
             canal = self.bot.get_channel(791131862239543327)
-            texto = f"Seja bem vindo ao servidor **{self.bot.get_user(self.bot.user.id).name}**, leia as <#783667565141426218> para ficar por dentro do servidor."
+            texto = f"Seja bem vindo ao servidor **{self.bot.get_user(self.bot.user.id).name}**, leia as <#{self.bot.regras}> para ficar por dentro do servidor."
             embed = discord.Embed(author="BEM VINDO",description=texto,color=self.bot.cor)
             embed.set_image(url='attachment://welcome.png')
             await canal.send(embed=embed, file=file,content=f"{member.mention}")
-            #await canal.send(f"Olá {member.mention}, seja bem vindo ao servidor **{self.bot.get_user(self.bot.user.id).name}**, leia as <#772972551713587210> para ficar por dentro do servidor.", file=discord.File('cogs/img/welcome.png'))
 
 
             if member.bot:

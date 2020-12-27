@@ -62,7 +62,7 @@ class informacao(commands.Cog):
       embed.add_field(name=f"🆔 ID", value = '``'+str(self.bot.user.id)+'``')
       embed.add_field(name=f"🈴 Api", value = '``Discord.py '+str(discord.__version__)+'``')
       embed.add_field(name=f"🐍 Python", value = '``'+str(sys.version[:5])+'``')
-      embed.add_field(name=f"💮 Memória", value = '``'+str(mem["memory_used"])+'/'+str(mem["memory_total"])+' ('+str(mem["memory_percent"])+')``')
+      embed.add_field(name=f"💮 Memória", value = '``'+str(mem["memory_used"])+'/'+str(mem["memory_total"])+'GBS ('+str(mem["memory_percent"])+')``')
       embed.add_field(name=f"⏳ Tempo de atividade", value = '``'+str(botstatus.timetotal()).replace("{day}","dia").replace("{hour}","hora").replace("{minute}","minuto").replace("{second}","segundo")+'``')
       embed.add_field(name=f"<a:dance3:654751224633098250> Servidores", value = '``'+str(len(self.bot.guilds))+' (shards '+"1"+')``')
       embed.add_field(name=f"📶 Lâtencia", value = '``{0:.2f}ms``'.format(self.bot.latency * 1000))
